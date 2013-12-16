@@ -7,7 +7,7 @@ require_once __DIR__ . '/Compiler/protos/descriptor.php';
 require_once __DIR__ . '/Compiler/protos/plugin.php';
 require_once __DIR__ . '/Compiler/protos/php.php';
 
-use DrSlump\Protobuf;
+use DrSlump\Protobuf\Codec\Binary;
 use google\protobuf as proto;
 
 class Compiler
@@ -59,7 +59,7 @@ class Compiler
     public function compile($data)
     {
         // Parse the request with a non-lazy binary codec
-        $codec = new Protobuf\Codec\Binary(false);
+        $codec = new Binary(false);
         $req = new \google\protobuf\compiler\CodeGeneratorRequest();
         $req->parse($data, $codec);
 

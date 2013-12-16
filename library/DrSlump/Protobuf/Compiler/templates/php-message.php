@@ -39,8 +39,8 @@ namespace <?php echo $this->ns($namespace)?> {
             $f = new \DrSlump\Protobuf\Field();
             $f->number = <?php echo $f->number?>;
             $f->name   = "<?php echo $this->fieldname($f)?>";
-            $f->rule   = \DrSlump\Protobuf::RULE_<?php echo strtoupper($this->rule($f))?>;
-            $f->type   = \DrSlump\Protobuf::TYPE_<?php echo strtoupper($this->type($f))?>;
+            $f->rule   = \DrSlump\Protobuf\Protobuf::RULE_<?php echo strtoupper($this->rule($f))?>;
+            $f->type   = \DrSlump\Protobuf\Protobuf::TYPE_<?php echo strtoupper($this->type($f))?>;
             <?php if (!empty($f->type_name)):
                 $ref = $f->type_name;
                 if (substr($ref, 0, 1) !== '.') {
@@ -53,18 +53,18 @@ namespace <?php echo $this->ns($namespace)?> {
             <?php
             if (isset($f->default_value)):
                 switch ($f->type) {
-                case \DrSlump\Protobuf::TYPE_BOOL:
+                case \DrSlump\Protobuf\Protobuf::TYPE_BOOL:
                     $bool = filter_var($f->default_value, FILTER_VALIDATE_BOOLEAN);
             ?> 
             $f->default = <?php echo $bool ? 'true' : 'false'?>;
             <?php
                 break;
-                case \DrSlump\Protobuf::TYPE_STRING:
+                case \DrSlump\Protobuf\Protobuf::TYPE_STRING:
             ?> 
             $f->default = '<?php echo addcslashes($f->default_value, "'\\")?>';
             <?php
                 break;
-                case \DrSlump\Protobuf::TYPE_ENUM:
+                case \DrSlump\Protobuf\Protobuf::TYPE_ENUM:
             ?> 
             $f->default = \<?php echo $this->ns($f->type_name)?>::<?php echo $f->default_value?>;
             <?php
@@ -118,7 +118,7 @@ namespace <?php echo $this->ns($namespace)?> {
             unset($this-><?php echo $name?>);
         }
 
-        <?php if ($f->label === \DrSlump\Protobuf::RULE_REPEATED): ?>
+        <?php if ($f->label === \DrSlump\Protobuf\Protobuf::RULE_REPEATED): ?>
 
         /**
          * Get "<?php echo $name?>" value

@@ -15,8 +15,8 @@
     $f = new \DrSlump\Protobuf\Field();
     $f->number = <?php echo $f->number?>;
     $f->name   = "<?php echo $f->name?>";
-    $f->rule   = \DrSlump\Protobuf::RULE_<?php echo $this->rule($f)?>;
-    $f->type   = \DrSlump\Protobuf::TYPE_<?php echo $this->type($f)?>;
+    $f->rule   = \DrSlump\Protobuf\Protobuf::RULE_<?php echo $this->rule($f)?>;
+    $f->type   = \DrSlump\Protobuf\Protobuf::TYPE_<?php echo $this->type($f)?>;
     <?php if ($f->hasTypeName()):
         $ref = $f->type_name;
         if (substr($ref, 0, 1) !== '.') {
@@ -28,18 +28,18 @@
     <?php
     if ($f->hasDefaultValue()):
         switch ($f->type) {
-        case \DrSlump\Protobuf::TYPE_BOOL:
+        case \DrSlump\Protobuf\Protobuf::TYPE_BOOL:
             $bool = filter_var($f->default_value, FILTER_VALIDATE_BOOLEAN);
     ?> 
     $f->default = <?php echo $bool ? 'true' : 'false'?>;
     <?php
         break;
-        case \DrSlump\Protobuf::TYPE_STRING:
+        case \DrSlump\Protobuf\Protobuf::TYPE_STRING:
     ?> 
     $f->default = '<?php echo addcslashes($f->default_value, "'\\")?>';
     <?php
         break;
-        case \DrSlump\Protobuf::TYPE_ENUM:
+        case \DrSlump\Protobuf\Protobuf::TYPE_ENUM:
     ?> 
     $f->default = \<?php echo $this->ns($f->type_name)?>::<?php echo $f->default_value?>;
     <?php

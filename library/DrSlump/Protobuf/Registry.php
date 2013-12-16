@@ -2,8 +2,6 @@
 
 namespace DrSlump\Protobuf;
 
-use DrSlump\Protobuf;
-
 /**
  * Keeps instances of the different message descriptors used.
  *
@@ -44,7 +42,7 @@ class Registry
         if (!isset($this->descriptors[$message])) {
             $class = '\\' . $message;
             if (!class_exists($class)) {
-                throw Protobuf\Exception('Message class "' . $class . '" not available');
+                throw new Exception('Message class "' . $class . '" not available');
             }
 
             $this->descriptors[$message] = $class::descriptor();

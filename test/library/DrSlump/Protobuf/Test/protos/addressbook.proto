@@ -1,6 +1,6 @@
 import "php.proto";
 
-package tests;
+package DrSlump.Protobuf.Test.protos;
 
 //option (php.namespace) = "Example";
 //option (php.multifile) = true;

@@ -50,12 +50,12 @@ if (NULL !== $newIncludePath) {
 error_reporting(error_reporting() & ~E_STRICT);
 
 // Setup autoloader
-require_once 'DrSlump/Protobuf.php';
+require_once 'vendor/autoload.php';
 
 try {
-    // Run the cli interface
-    \DrSlump\Protobuf\Compiler\Cli::run(__FILE__);
-    exit(0);
+    $application = new \DrSlump\Protobuf\Compiler\Cli(__FILE__);
+    $status = $application->run();
+    exit($status);
 
 } catch(Exception $e) {
     fputs(STDERR, (string)$e . PHP_EOL);

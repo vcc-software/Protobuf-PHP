@@ -240,9 +240,9 @@ abstract class AbstractGenerator
     public function rule(proto\FieldDescriptorProto $field)
     {
         switch ($field->label) {
-        case Protobuf::RULE_OPTIONAL: return 'optional';
-        case Protobuf::RULE_REQUIRED: return 'required';
-        case Protobuf::RULE_REPEATED: return 'repeated';
+        case Protobuf\Protobuf::RULE_OPTIONAL: return 'optional';
+        case Protobuf\Protobuf::RULE_REQUIRED: return 'required';
+        case Protobuf\Protobuf::RULE_REPEATED: return 'repeated';
         default: return '*unknown*';
         }
     }
@@ -256,23 +256,23 @@ abstract class AbstractGenerator
     public function type(proto\FieldDescriptorProto $field)
     {
         switch ($field->type) {
-        case Protobuf::TYPE_DOUBLE: return 'double';
-        case Protobuf::TYPE_FLOAT: return 'float';
-        case Protobuf::TYPE_INT64: return 'int64';
-        case Protobuf::TYPE_UINT64: return 'uint64';
-        case Protobuf::TYPE_INT32: return 'int32';
-        case Protobuf::TYPE_FIXED64: return 'fixed64';
-        case Protobuf::TYPE_FIXED32: return 'fixed32';
-        case Protobuf::TYPE_BOOL: return 'bool';
-        case Protobuf::TYPE_STRING: return 'string';
-        case Protobuf::TYPE_MESSAGE: return 'message';
-        case Protobuf::TYPE_BYTES: return 'bytes';
-        case Protobuf::TYPE_UINT32: return 'uint32';
-        case Protobuf::TYPE_ENUM: return 'enum';
-        case Protobuf::TYPE_SFIXED32: return 'sfixed32';
-        case Protobuf::TYPE_SFIXED64: return 'sfixed64';
-        case Protobuf::TYPE_SINT32: return 'sint32';
-        case Protobuf::TYPE_SINT64: return 'sint64';
+        case Protobuf\Protobuf::TYPE_DOUBLE: return 'double';
+        case Protobuf\Protobuf::TYPE_FLOAT: return 'float';
+        case Protobuf\Protobuf::TYPE_INT64: return 'int64';
+        case Protobuf\Protobuf::TYPE_UINT64: return 'uint64';
+        case Protobuf\Protobuf::TYPE_INT32: return 'int32';
+        case Protobuf\Protobuf::TYPE_FIXED64: return 'fixed64';
+        case Protobuf\Protobuf::TYPE_FIXED32: return 'fixed32';
+        case Protobuf\Protobuf::TYPE_BOOL: return 'bool';
+        case Protobuf\Protobuf::TYPE_STRING: return 'string';
+        case Protobuf\Protobuf::TYPE_MESSAGE: return 'message';
+        case Protobuf\Protobuf::TYPE_BYTES: return 'bytes';
+        case Protobuf\Protobuf::TYPE_UINT32: return 'uint32';
+        case Protobuf\Protobuf::TYPE_ENUM: return 'enum';
+        case Protobuf\Protobuf::TYPE_SFIXED32: return 'sfixed32';
+        case Protobuf\Protobuf::TYPE_SFIXED64: return 'sfixed64';
+        case Protobuf\Protobuf::TYPE_SINT32: return 'sint32';
+        case Protobuf\Protobuf::TYPE_SINT64: return 'sint64';
         default: return '*unknown*';
         }
     }
@@ -286,29 +286,29 @@ abstract class AbstractGenerator
     protected function doctype(proto\FieldDescriptorProto $field)
     {
         switch ($field->getType()) {
-        case Protobuf::TYPE_DOUBLE:
-        case Protobuf::TYPE_FLOAT:
+        case Protobuf\Protobuf::TYPE_DOUBLE:
+        case Protobuf\Protobuf::TYPE_FLOAT:
             return 'float';
-        case Protobuf::TYPE_INT64:
-        case Protobuf::TYPE_UINT64:
-        case Protobuf::TYPE_INT32:
-        case Protobuf::TYPE_FIXED64:
-        case Protobuf::TYPE_FIXED32:
-        case Protobuf::TYPE_UINT32:
-        case Protobuf::TYPE_SFIXED32:
-        case Protobuf::TYPE_SFIXED64:
-        case Protobuf::TYPE_SINT32:
-        case Protobuf::TYPE_SINT64:
+        case Protobuf\Protobuf::TYPE_INT64:
+        case Protobuf\Protobuf::TYPE_UINT64:
+        case Protobuf\Protobuf::TYPE_INT32:
+        case Protobuf\Protobuf::TYPE_FIXED64:
+        case Protobuf\Protobuf::TYPE_FIXED32:
+        case Protobuf\Protobuf::TYPE_UINT32:
+        case Protobuf\Protobuf::TYPE_SFIXED32:
+        case Protobuf\Protobuf::TYPE_SFIXED64:
+        case Protobuf\Protobuf::TYPE_SINT32:
+        case Protobuf\Protobuf::TYPE_SINT64:
             return 'int';
-        case Protobuf::TYPE_BOOL:
+        case Protobuf\Protobuf::TYPE_BOOL:
             return 'boolean';
-        case Protobuf::TYPE_STRING:
+        case Protobuf\Protobuf::TYPE_STRING:
             return 'string';
-        case Protobuf::TYPE_MESSAGE:
+        case Protobuf\Protobuf::TYPE_MESSAGE:
             return $this->ns($field->type_name);
-        case Protobuf::TYPE_BYTES:
+        case Protobuf\Protobuf::TYPE_BYTES:
             return 'string';
-        case Protobuf::TYPE_ENUM:
+        case Protobuf\Protobuf::TYPE_ENUM:
             return 'int - ' . $this->ns($field->type_name);
         default:
             return '*unknown*';

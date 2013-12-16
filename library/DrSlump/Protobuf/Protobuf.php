@@ -1,8 +1,6 @@
 <?php
 
-namespace DrSlump;
-
-use DrSlump\Protobuf;
+namespace DrSlump\Protobuf;
 
 class Protobuf
 {
@@ -36,45 +34,18 @@ class Protobuf
 
     static protected $codecs = array();
 
-
-    /**
-     * Setup SPL autoloader for Protobuf library classes
-     *
-     * @static
-     * @return void
-     */
-    static public function autoload()
-    {
-        spl_autoload_register(function($class){
-            $prefix = __CLASS__ . '\\';
-            if (strpos($class, $prefix) === 0) {
-                // Remove vendor from name
-                $class = substr($class, strlen(__NAMESPACE__)+1);
-                // Convert namespace separator to directory ones
-                $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-                // Prefix with this file's directory
-                $class = __DIR__ . DIRECTORY_SEPARATOR . $class;
-
-                include($class . '.php');
-                return true;
-            }
-
-            return false;
-        });
-    }
-
     /**
      * Obtain an instance of the descriptor's registry
      *
      * @static
-     * @return Protobuf\Registry
+     * @return Registry
      */
     static public function getRegistry()
     {
         static $registry = NULL;
 
         if (NULL === $registry) {
-            $registry = new Protobuf\Registry();
+            $registry = new Registry();
         }
 
         return $registry;
@@ -83,13 +54,13 @@ class Protobuf
 
     static public function getCodec($codec = null)
     {
-        if ($codec instanceof Protobuf\CodecInterface) {
+        if ($codec instanceof CodecInterface) {
             return $codec;
         }
 
         // Bootstrap the library's default codec if none is available
         if (!isset(self::$codecs['default'])) {
-            $default = new Protobuf\Codec\Binary();
+            $default = new Codec\Binary();
             self::registerCodec('default', $default);
             self::registerCodec('binary', $default);
         }
@@ -97,7 +68,7 @@ class Protobuf
         if (is_string($codec)) {
             $codec = strtolower($codec);
             if (!isset(self::$codecs[$codec])) {
-                throw new Protobuf\Exception('No codec found by name "' . $codec . '"');
+                throw new Exception('No codec found by name "' . $codec . '"');
             }
             return self::$codecs[$codec];
         }
@@ -111,14 +82,14 @@ class Protobuf
             $codec = self::getCodec($codec);
         }
 
-        if ($codec instanceof Protobuf\CodecInterface) {
+        if ($codec instanceof CodecInterface) {
             self::registerCodec('default', $codec);
         } else {
-            throw new Protobuf\Exception('Codec must implement DrSlump\Protobuf\CodecInterface');
+            throw new Exception('Codec must implement DrSlump\Protobuf\CodecInterface');
         }
     }
 
-    static public function registerCodec($name, Protobuf\CodecInterface $codec)
+    static public function registerCodec($name, CodecInterface $codec)
     {
         $name = strtolower($name);
         self::$codecs[$name] = $codec;
@@ -141,7 +112,7 @@ class Protobuf
      * @param \DrSlump\Protobuf\Message $message
      * @return string
      */
-    static public function encode(Protobuf\Message $message)
+    static public function encode(Message $message)
     {
         $codec = self::getCodec();
         return $codec->encode($message);
@@ -163,9 +134,4 @@ class Protobuf
         $codec = self::getCodec();
         return $codec->decode($message, $data);
     }
-}
-
-// Register the autoloader automatically if not disabled via a constant
-if (!defined('DRSLUMP_PROTOBUF_AUTOLOAD') || DRSLUMP_PROTOBUF_AUTOLOAD) {
-    Protobuf::autoload();
 }

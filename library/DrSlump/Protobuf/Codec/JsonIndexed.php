@@ -16,7 +16,7 @@ class JsonIndexed extends Json
 
     protected function encodeMessage(Protobuf\Message $message)
     {
-        $descriptor = Protobuf::getRegistry()->getDescriptor($message);
+        $descriptor = Protobuf\Protobuf::getRegistry()->getDescriptor($message);
 
         $strict = $this->getOption('strict');
 
@@ -48,7 +48,7 @@ class JsonIndexed extends Json
             if ($field->isRepeated()) {
                 $repeats = array();
                 foreach ($value as $val) {
-                    if ($field->getType() !== Protobuf::TYPE_MESSAGE) {
+                    if ($field->getType() !== Protobuf\Protobuf::TYPE_MESSAGE) {
                         $repeats[] = $val;
                     } else {
                         $repeats[] = $this->encodeMessage($val);
@@ -56,7 +56,7 @@ class JsonIndexed extends Json
                 }
                 $data[] = $repeats;
             } else {
-                if ($field->getType() === Protobuf::TYPE_MESSAGE) {
+                if ($field->getType() === Protobuf\Protobuf::TYPE_MESSAGE) {
                     $data[] = $this->encodeMessage($value);
                 } else {
                     $data[] = $value;
@@ -73,7 +73,7 @@ class JsonIndexed extends Json
     protected function decodeMessage(Protobuf\Message $message, $data)
     {
         // Get message descriptor
-        $descriptor = Protobuf::getRegistry()->getDescriptor($message);
+        $descriptor = Protobuf\Protobuf::getRegistry()->getDescriptor($message);
 
         // Split the index in UTF8 characters
         preg_match_all('/./u', $data[0], $chars);
@@ -95,7 +95,7 @@ class JsonIndexed extends Json
 
             $name = $field->getName();
 
-            if ($field->getType() === Protobuf::TYPE_MESSAGE) {
+            if ($field->getType() === Protobuf\Protobuf::TYPE_MESSAGE) {
                 $nested = $field->getReference();
                 if ($field->isRepeated()) {
                     foreach ($v as $kk=>$vv) {

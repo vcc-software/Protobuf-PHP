@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Annotated;
+namespace DrSlump\Protobuf\Test\protos\Annotated;
 
 class Simple extends \DrSlump\Protobuf\AnnotatedMessage
 {

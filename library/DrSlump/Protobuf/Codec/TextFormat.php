@@ -36,7 +36,7 @@ class TextFormat extends Protobuf\CodecAbstract
 
     protected function encodeMessage(Protobuf\MessageInterface $message, $level = 0)
     {
-        $descriptor = Protobuf::getRegistry()->getDescriptor($message);
+        $descriptor = Protobuf\Protobuf::getRegistry()->getDescriptor($message);
 
         $strict = $this->getOption('strict');
 
@@ -67,7 +67,7 @@ class TextFormat extends Protobuf\CodecAbstract
                     // Skip nullified repeated values
                     if (NULL === $val) {
                         continue;
-                    } else if ($field->getType() !== Protobuf::TYPE_MESSAGE) {
+                    } else if ($field->getType() !== Protobuf\Protobuf::TYPE_MESSAGE) {
                         $data .= $indent . $name . ': ' . json_encode($val) . "\n";
                     } else {
                         $data .= $indent . $name . " {\n";
@@ -76,7 +76,7 @@ class TextFormat extends Protobuf\CodecAbstract
                     }
                 }
             } else {
-                if ($field->getType() === Protobuf::TYPE_MESSAGE) {
+                if ($field->getType() === Protobuf\Protobuf::TYPE_MESSAGE) {
                     $data .= $indent . $name . " {\n";
                     $data .= $this->encodeMessage($value, $level+1);
                     $data .= $indent . "}\n";

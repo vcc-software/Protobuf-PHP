@@ -117,7 +117,7 @@ class JsonCodecTests extends \PHPUnit_Framework_TestCase
 
     function testSerializeAnnotatedSimpleMessage()
     {
-        $simple = new tests\Annotated\Simple();
+        $simple = new test\Annotated\Simple();
         $simple->foo = 'FOO';
         $simple->bar = 1000;
         $json = Protobuf::encode($simple);

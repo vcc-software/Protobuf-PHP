@@ -2,9 +2,6 @@
 
 namespace DrSlump\Protobuf;
 
-use DrSlump\Protobuf;
-
-
 abstract class Enum extends \IteratorIterator implements \ArrayAccess
 {
     /** @var array */

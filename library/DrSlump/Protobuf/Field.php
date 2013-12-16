@@ -2,8 +2,6 @@
 
 namespace DrSlump\Protobuf;
 
-use DrSlump\Protobuf;
-
 class Field
 {
     public $number;

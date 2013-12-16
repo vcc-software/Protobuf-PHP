@@ -1,16 +1,10 @@
 <?php
 
-require_once 'Benchmark/Profiler.php';
-require_once __DIR__ . '/../library/DrSlump/Protobuf.php';
+$autoload_path =  __DIR__ . "/../vendor/autoload.php";
+$loader = require($autoload_path);
+$loader->add('protos', __DIR__);
 
-use \DrSlump\Protobuf;
-
-Protobuf::autoload();
-
-include_once __DIR__ . '/protos/simple.php';
-include_once __DIR__ . '/protos/addressbook.php';
-
-
+use DrSlump\Protobuf;
 class Benchmark {
 
     protected $tests = array(
@@ -47,7 +41,7 @@ class Benchmark {
 
     protected function runDecodeBinarySimple($codec, $data)
     {
-        $codec->decode(new tests\Simple(), $data);
+        $codec->decode(new test\Simple(), $data);
     }
 
     protected function configDecodeJsonSimple()
@@ -56,18 +50,17 @@ class Benchmark {
         $codecJson = new Protobuf\Codec\Json();
 
         $bin = $this->configDecodeBinarySimple();
-        $simple = $codecBin->decode(new tests\Simple(), $bin[1]);
+        $simple = $codecBin->decode(new test\Simple(), $bin[1]);
         $data = $codecJson->encode($simple);
         return array($codecJson, $data);
     }
 
     protected function runDecodeJsonSimple($codec, $data)
     {
-        $codec->decode(new tests\Simple(), $data);
+        $codec->decode(new test\Simple(), $data);
     }
 }
 
 
 $bench = new Benchmark();
 $bench->run(1000);
-

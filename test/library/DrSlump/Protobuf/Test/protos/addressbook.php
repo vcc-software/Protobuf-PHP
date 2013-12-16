@@ -4,7 +4,7 @@
 //   Date: 2012-03-19 10:12:31 
 
 
-namespace tests {
+namespace test {
 
             /**
      * Defines a Person in the addressbook
@@ -20,7 +20,7 @@ namespace tests {
 
         public static function descriptor()
         {
-            $descriptor = new \DrSlump\Protobuf\Descriptor(__CLASS__, 'tests.Person');
+            $descriptor = new \DrSlump\Protobuf\Descriptor(__CLASS__, 'test.Person');
 
              
             // required string name = 1 
@@ -57,7 +57,7 @@ namespace tests {
             $f->rule   = \DrSlump\Protobuf::RULE_REPEATED;
             $f->type   = \DrSlump\Protobuf::TYPE_MESSAGE;
              
-            $f->reference = '\tests\Person\PhoneNumber';
+            $f->reference = '\test\Person\PhoneNumber';
 
             $descriptor->addField($f);
             
@@ -215,7 +215,7 @@ namespace tests {
         /**
          * Get "phone" value
          *
-         * @return tests\Person\PhoneNumber[]
+         * @return test\Person\PhoneNumber[]
          */
         public function getPhone($idx = null)
         {
@@ -229,7 +229,7 @@ namespace tests {
         /**
          * Set "phone" value
          *
-         * @param tests\Person\PhoneNumber[] $value
+         * @param test\Person\PhoneNumber[] $value
          */
         public function setPhone($value)
         {
@@ -239,7 +239,7 @@ namespace tests {
         /**
          * Add a new element to "phone"
          *
-         * @param tests\Person\PhoneNumber $value
+         * @param test\Person\PhoneNumber $value
          */
         public function addPhone($value)
         {
@@ -249,7 +249,7 @@ namespace tests {
 }
 
 
-namespace tests\Person {
+namespace test\Person {
 
             /**
      * Different types of phones
@@ -264,7 +264,7 @@ namespace tests\Person {
 }
  
 
-namespace tests\Person {
+namespace test\Person {
 
             /**
      * A phone number record
@@ -280,7 +280,7 @@ namespace tests\Person {
 
         public static function descriptor()
         {
-            $descriptor = new \DrSlump\Protobuf\Descriptor(__CLASS__, 'tests.Person.PhoneNumber');
+            $descriptor = new \DrSlump\Protobuf\Descriptor(__CLASS__, 'test.Person.PhoneNumber');
 
              
             // required string number = 1 
@@ -299,10 +299,10 @@ namespace tests\Person {
             $f->rule   = \DrSlump\Protobuf::RULE_OPTIONAL;
             $f->type   = \DrSlump\Protobuf::TYPE_ENUM;
              
-            $f->reference = '\tests\Person\PhoneType';
+            $f->reference = '\test\Person\PhoneType';
             
              
-            $f->default = \tests\Person\PhoneType::HOME;
+            $f->default = \test\Person\PhoneType::HOME;
 
             $descriptor->addField($f);
             
@@ -378,7 +378,7 @@ namespace tests\Person {
         /**
          * Get "type" value
          *
-         * @return int - tests\Person\PhoneType 
+         * @return int - test\Person\PhoneType
          */
         public function getType()
         {
@@ -388,7 +388,7 @@ namespace tests\Person {
         /**
          * Set "type" value
          *
-         * @param int - tests\Person\PhoneType $value
+         * @param int - test\Person\PhoneType $value
          */
         public function setType($value)
         {
@@ -398,7 +398,7 @@ namespace tests\Person {
 }
 
 
-namespace tests {
+namespace test {
 
             /**
      * A collection of persons contact details
@@ -414,7 +414,7 @@ namespace tests {
 
         public static function descriptor()
         {
-            $descriptor = new \DrSlump\Protobuf\Descriptor(__CLASS__, 'tests.AddressBook');
+            $descriptor = new \DrSlump\Protobuf\Descriptor(__CLASS__, 'test.AddressBook');
 
              
             // repeated message person = 1 
@@ -424,7 +424,7 @@ namespace tests {
             $f->rule   = \DrSlump\Protobuf::RULE_REPEATED;
             $f->type   = \DrSlump\Protobuf::TYPE_MESSAGE;
              
-            $f->reference = '\tests\Person';
+            $f->reference = '\test\Person';
 
             $descriptor->addField($f);
             
@@ -459,7 +459,7 @@ namespace tests {
         /**
          * Get "person" value
          *
-         * @return tests\Person[]
+         * @return test\Person[]
          */
         public function getPerson($idx = null)
         {
@@ -473,7 +473,7 @@ namespace tests {
         /**
          * Set "person" value
          *
-         * @param tests\Person[] $value
+         * @param test\Person[] $value
          */
         public function setPerson($value)
         {
@@ -483,7 +483,7 @@ namespace tests {
         /**
          * Add a new element to "person"
          *
-         * @param tests\Person $value
+         * @param test\Person $value
          */
         public function addPerson($value)
         {

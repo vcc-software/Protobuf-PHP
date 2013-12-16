@@ -3,7 +3,6 @@
 namespace DrSlump\Protobuf\Codec;
 
 use DrSlump\Protobuf;
-
 /**
  * Acts as a proxy to the actual binary codec implementation, either using the
  * extension or the native PHP implementation
@@ -24,9 +23,9 @@ class Binary extends Protobuf\CodecAbstract
         parent::__construct($options);
 
         if (extension_loaded($this->getOption('extension'))) {
-            $this->_impl = new Binary\Extension($options);
+            $this->_impl = new Protobuf\Codec\Binary\Extension($options);
         } else {
-            $this->_impl = new Binary\Native($options);
+            $this->_impl = new Protobuf\Codec\Binary\Native($options);
         }
     }
 

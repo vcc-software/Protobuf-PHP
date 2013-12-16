@@ -17,24 +17,24 @@ class Native extends Protobuf\CodecAbstract
 
     // Table map to know if a field type is "packable"
     static $PACKABLE = array(
-        Protobuf::TYPE_DOUBLE => true,
-        Protobuf::TYPE_FLOAT => true,
-        Protobuf::TYPE_INT64 => true,
-        Protobuf::TYPE_UINT64 => true,
-        Protobuf::TYPE_INT32 => true,
-        Protobuf::TYPE_FIXED64 => true,
-        Protobuf::TYPE_FIXED32 => true,
-        Protobuf::TYPE_BOOL => true,
-        Protobuf::TYPE_STRING => false,
-        Protobuf::TYPE_GROUP => false,
-        Protobuf::TYPE_MESSAGE => false,
-        Protobuf::TYPE_BYTES => false,
-        Protobuf::TYPE_UINT32 => true,
-        Protobuf::TYPE_ENUM => true,
-        Protobuf::TYPE_SFIXED32 => true,
-        Protobuf::TYPE_SFIXED64 => true,
-        Protobuf::TYPE_SINT32 => true,
-        Protobuf::TYPE_SINT64 => true
+        Protobuf\Protobuf::TYPE_DOUBLE => true,
+        Protobuf\Protobuf::TYPE_FLOAT => true,
+        Protobuf\Protobuf::TYPE_INT64 => true,
+        Protobuf\Protobuf::TYPE_UINT64 => true,
+        Protobuf\Protobuf::TYPE_INT32 => true,
+        Protobuf\Protobuf::TYPE_FIXED64 => true,
+        Protobuf\Protobuf::TYPE_FIXED32 => true,
+        Protobuf\Protobuf::TYPE_BOOL => true,
+        Protobuf\Protobuf::TYPE_STRING => false,
+        Protobuf\Protobuf::TYPE_GROUP => false,
+        Protobuf\Protobuf::TYPE_MESSAGE => false,
+        Protobuf\Protobuf::TYPE_BYTES => false,
+        Protobuf\Protobuf::TYPE_UINT32 => true,
+        Protobuf\Protobuf::TYPE_ENUM => true,
+        Protobuf\Protobuf::TYPE_SFIXED32 => true,
+        Protobuf\Protobuf::TYPE_SFIXED64 => true,
+        Protobuf\Protobuf::TYPE_SINT32 => true,
+        Protobuf\Protobuf::TYPE_SINT64 => true
     );
 
     protected $_reader = NULL;
@@ -83,7 +83,7 @@ class Native extends Protobuf\CodecAbstract
         $lazy = $this->getOption('lazy');
 
         // Get message descriptor
-        $descriptor = Protobuf::getRegistry()->getDescriptor($message);
+        $descriptor = Protobuf\Protobuf::getRegistry()->getDescriptor($message);
         // Cache list of fields
         $fields = $descriptor->getFields();
 
@@ -124,7 +124,7 @@ class Native extends Protobuf\CodecAbstract
 
                 $len = $reader->varint();
                 $until = $reader->pos() + $len;
-                $wire = $this->getWireType($type);
+                $wire = $this->getWireType($type, $key);
                 while ($reader->pos() < $until) {
                     $item = $this->decodeSimpleType($reader, $type, $wire);
                     $repeated[$tag][] = $item;
@@ -136,7 +136,7 @@ class Native extends Protobuf\CodecAbstract
                 $this->assertWireType($wire, $type);
 
                 // Check if it's a sub-message
-                if ($type === Protobuf::TYPE_MESSAGE) {
+                if ($type === Protobuf\Protobuf::TYPE_MESSAGE) {
                     $len = $reader->varint();
 
                     // Protect against completely empty nested messages
@@ -179,7 +179,7 @@ class Native extends Protobuf\CodecAbstract
             $field = $fields[$tag];
 
             // Only nested messages are wrapped in LazyRepeat
-            if ($lazy && $field->getType() === Protobuf::TYPE_MESSAGE) {
+            if ($lazy && $field->getType() === Protobuf\Protobuf::TYPE_MESSAGE) {
                 $values = new Protobuf\LazyRepeat($values);
                 $values->codec = $this;
                 $values->descriptor = $field;
@@ -199,7 +199,7 @@ class Native extends Protobuf\CodecAbstract
             $reader = new Protobuf\Codec\Binary\NativeReader();
         }
 
-        if ($field->getType() === Protobuf::TYPE_MESSAGE) {
+        if ($field->getType() === Protobuf\Protobuf::TYPE_MESSAGE) {
             $msg = $field->getReference();
             $msg = new $msg;
             $reader->init($bytes);
@@ -240,23 +240,23 @@ class Native extends Protobuf\CodecAbstract
     protected function getWireType($type, $default)
     {
         static $map = array(
-            Protobuf::TYPE_INT32 => self::WIRE_VARINT,
-            Protobuf::TYPE_INT64 => self::WIRE_VARINT,
-            Protobuf::TYPE_UINT32 => self::WIRE_VARINT,
-            Protobuf::TYPE_UINT64 => self::WIRE_VARINT,
-            Protobuf::TYPE_SINT32 => self::WIRE_VARINT,
-            Protobuf::TYPE_SINT64 => self::WIRE_VARINT,
-            Protobuf::TYPE_BOOL => self::WIRE_VARINT,
-            Protobuf::TYPE_ENUM => self::WIRE_VARINT,
-            Protobuf::TYPE_FIXED64 => self::WIRE_FIXED64,
-            Protobuf::TYPE_SFIXED64 => self::WIRE_FIXED64,
-            Protobuf::TYPE_DOUBLE => self::WIRE_FIXED64,
-            Protobuf::TYPE_STRING => self::WIRE_LENGTH,
-            Protobuf::TYPE_BYTES => self::WIRE_LENGTH,
-            Protobuf::TYPE_MESSAGE => self::WIRE_LENGTH,
-            Protobuf::TYPE_FIXED32 => self::WIRE_FIXED32,
-            Protobuf::TYPE_SFIXED32 => self::WIRE_FIXED32,
-            Protobuf::TYPE_FLOAT => self::WIRE_FIXED32
+            Protobuf\Protobuf::TYPE_INT32 => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_INT64 => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_UINT32 => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_UINT64 => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_SINT32 => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_SINT64 => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_BOOL => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_ENUM => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_FIXED64 => self::WIRE_FIXED64,
+            Protobuf\Protobuf::TYPE_SFIXED64 => self::WIRE_FIXED64,
+            Protobuf\Protobuf::TYPE_DOUBLE => self::WIRE_FIXED64,
+            Protobuf\Protobuf::TYPE_STRING => self::WIRE_LENGTH,
+            Protobuf\Protobuf::TYPE_BYTES => self::WIRE_LENGTH,
+            Protobuf\Protobuf::TYPE_MESSAGE => self::WIRE_LENGTH,
+            Protobuf\Protobuf::TYPE_FIXED32 => self::WIRE_FIXED32,
+            Protobuf\Protobuf::TYPE_SFIXED32 => self::WIRE_FIXED32,
+            Protobuf\Protobuf::TYPE_FLOAT => self::WIRE_FIXED32
         );
 
         // Unknown types just return the reported wire type
@@ -266,40 +266,40 @@ class Native extends Protobuf\CodecAbstract
     protected function decodeSimpleType($reader, $type, $wireType)
     {
         switch ($type) {
-            case Protobuf::TYPE_INT64:
-            case Protobuf::TYPE_UINT64:
-            case Protobuf::TYPE_INT32:
-            case Protobuf::TYPE_UINT32:
-            case Protobuf::TYPE_ENUM:
+            case Protobuf\Protobuf::TYPE_INT64:
+            case Protobuf\Protobuf::TYPE_UINT64:
+            case Protobuf\Protobuf::TYPE_INT32:
+            case Protobuf\Protobuf::TYPE_UINT32:
+            case Protobuf\Protobuf::TYPE_ENUM:
                 return $reader->varint();
 
-            case Protobuf::TYPE_SINT32: // ZigZag
+            case Protobuf\Protobuf::TYPE_SINT32: // ZigZag
                 return $reader->zigzag();
-            case Protobuf::TYPE_SINT64: // ZigZag
+            case Protobuf\Protobuf::TYPE_SINT64: // ZigZag
                 return $reader->zigzag();
-            case Protobuf::TYPE_DOUBLE:
+            case Protobuf\Protobuf::TYPE_DOUBLE:
                 return $reader->double();
-            case Protobuf::TYPE_FIXED64:
+            case Protobuf\Protobuf::TYPE_FIXED64:
                 return $reader->fixed64();
-            case Protobuf::TYPE_SFIXED64:
+            case Protobuf\Protobuf::TYPE_SFIXED64:
                 return $reader->sFixed64();
 
-            case Protobuf::TYPE_FLOAT:
+            case Protobuf\Protobuf::TYPE_FLOAT:
                 return $reader->float();
-            case Protobuf::TYPE_FIXED32:
+            case Protobuf\Protobuf::TYPE_FIXED32:
                 return $reader->fixed32();
-            case Protobuf::TYPE_SFIXED32:
+            case Protobuf\Protobuf::TYPE_SFIXED32:
                 return $reader->sFixed32();
 
-            case Protobuf::TYPE_BOOL:
+            case Protobuf\Protobuf::TYPE_BOOL:
                 return (bool)$reader->varint();
 
-            case Protobuf::TYPE_STRING:
-            case Protobuf::TYPE_BYTES:
+            case Protobuf\Protobuf::TYPE_STRING:
+            case Protobuf\Protobuf::TYPE_BYTES:
                 $length = $reader->varint();
                 return $reader->read($length);
 
-            case Protobuf::TYPE_MESSAGE:
+            case Protobuf\Protobuf::TYPE_MESSAGE:
                 throw new \RuntimeException('Nested messages are not supported in this method');
 
             default:
@@ -333,7 +333,7 @@ class Native extends Protobuf\CodecAbstract
         $writer = new NativeWriter();
 
         // Get message descriptor
-        $descriptor = Protobuf::getRegistry()->getDescriptor($message);
+        $descriptor = Protobuf\Protobuf::getRegistry()->getDescriptor($message);
 
         $strict = $this->getOption('strict');
 
@@ -382,7 +382,7 @@ class Native extends Protobuf\CodecAbstract
                         // Skip nullified repeated values
                         if (NULL === $val) {
                             continue;
-                        } else if ($type !== Protobuf::TYPE_MESSAGE) {
+                        } else if ($type !== Protobuf\Protobuf::TYPE_MESSAGE) {
                             $writer->varint($key);
                             $this->encodeSimpleType($writer, $type, $val);
                         } else {
@@ -393,7 +393,7 @@ class Native extends Protobuf\CodecAbstract
                         }
                     }
                 }
-            } else if ($type !== Protobuf::TYPE_MESSAGE) {
+            } else if ($type !== Protobuf\Protobuf::TYPE_MESSAGE) {
                 $writer->varint($key);
                 $this->encodeSimpleType($writer, $type, $value);
             } else {
@@ -410,56 +410,56 @@ class Native extends Protobuf\CodecAbstract
     protected function encodeSimpleType($writer, $type, $value)
     {
         switch ($type) {
-            case Protobuf::TYPE_INT32:
-            case Protobuf::TYPE_INT64:
-            case Protobuf::TYPE_UINT64:
-            case Protobuf::TYPE_UINT32:
+            case Protobuf\Protobuf::TYPE_INT32:
+            case Protobuf\Protobuf::TYPE_INT64:
+            case Protobuf\Protobuf::TYPE_UINT64:
+            case Protobuf\Protobuf::TYPE_UINT32:
                 $writer->varint($value);
                 break;
 
-            case Protobuf::TYPE_SINT32: // ZigZag
+            case Protobuf\Protobuf::TYPE_SINT32: // ZigZag
                 $writer->zigzag($value, 32);
                 break;
 
-            case Protobuf::TYPE_SINT64 : // ZigZag
+            case Protobuf\Protobuf::TYPE_SINT64 : // ZigZag
                 $writer->zigzag($value, 64);
                 break;
 
-            case Protobuf::TYPE_DOUBLE:
+            case Protobuf\Protobuf::TYPE_DOUBLE:
                 $writer->double($value);
                 break;
-            case Protobuf::TYPE_FIXED64:
+            case Protobuf\Protobuf::TYPE_FIXED64:
                 $writer->fixed64($value);
                 break;
-            case Protobuf::TYPE_SFIXED64:
+            case Protobuf\Protobuf::TYPE_SFIXED64:
                 $writer->sFixed64($value);
                 break;
 
-            case Protobuf::TYPE_FLOAT:
+            case Protobuf\Protobuf::TYPE_FLOAT:
                 $writer->float($value);
                 break;
-            case Protobuf::TYPE_FIXED32:
+            case Protobuf\Protobuf::TYPE_FIXED32:
                 $writer->fixed32($value);
                 break;
-            case Protobuf::TYPE_SFIXED32:
+            case Protobuf\Protobuf::TYPE_SFIXED32:
                 $writer->sFixed32($value);
                 break;
 
-            case Protobuf::TYPE_BOOL:
+            case Protobuf\Protobuf::TYPE_BOOL:
                 $writer->varint($value ? 1 : 0);
                 break;
 
-            case Protobuf::TYPE_STRING:
-            case Protobuf::TYPE_BYTES:
+            case Protobuf\Protobuf::TYPE_STRING:
+            case Protobuf\Protobuf::TYPE_BYTES:
                 $writer->varint(strlen($value));
                 $writer->write($value);
                 break;
 
-            case Protobuf::TYPE_MESSAGE:
+            case Protobuf\Protobuf::TYPE_MESSAGE:
                 // Messages are not supported in this method
                 return null;
 
-            case Protobuf::TYPE_ENUM:
+            case Protobuf\Protobuf::TYPE_ENUM:
                 $writer->varint($value);
                 break;
 

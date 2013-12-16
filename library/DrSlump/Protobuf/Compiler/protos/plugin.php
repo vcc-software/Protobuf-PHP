@@ -25,8 +25,8 @@ namespace google\protobuf\compiler {
             $f = new \DrSlump\Protobuf\Field();
             $f->number = 1;
             $f->name   = "file_to_generate";
-            $f->rule   = \DrSlump\Protobuf::RULE_REPEATED;
-            $f->type   = \DrSlump\Protobuf::TYPE_STRING;
+            $f->rule   = \DrSlump\Protobuf\Protobuf::RULE_REPEATED;
+            $f->type   = \DrSlump\Protobuf\Protobuf::TYPE_STRING;
 
             $descriptor->addField($f);
              
@@ -34,8 +34,8 @@ namespace google\protobuf\compiler {
             $f = new \DrSlump\Protobuf\Field();
             $f->number = 2;
             $f->name   = "parameter";
-            $f->rule   = \DrSlump\Protobuf::RULE_OPTIONAL;
-            $f->type   = \DrSlump\Protobuf::TYPE_STRING;
+            $f->rule   = \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL;
+            $f->type   = \DrSlump\Protobuf\Protobuf::TYPE_STRING;
 
             $descriptor->addField($f);
              
@@ -43,8 +43,8 @@ namespace google\protobuf\compiler {
             $f = new \DrSlump\Protobuf\Field();
             $f->number = 15;
             $f->name   = "proto_file";
-            $f->rule   = \DrSlump\Protobuf::RULE_REPEATED;
-            $f->type   = \DrSlump\Protobuf::TYPE_MESSAGE;
+            $f->rule   = \DrSlump\Protobuf\Protobuf::RULE_REPEATED;
+            $f->type   = \DrSlump\Protobuf\Protobuf::TYPE_MESSAGE;
              
             $f->reference = '\google\protobuf\FileDescriptorProto';
 
@@ -224,8 +224,8 @@ namespace google\protobuf\compiler {
             $f = new \DrSlump\Protobuf\Field();
             $f->number = 1;
             $f->name   = "error";
-            $f->rule   = \DrSlump\Protobuf::RULE_OPTIONAL;
-            $f->type   = \DrSlump\Protobuf::TYPE_STRING;
+            $f->rule   = \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL;
+            $f->type   = \DrSlump\Protobuf\Protobuf::TYPE_STRING;
 
             $descriptor->addField($f);
              
@@ -233,8 +233,8 @@ namespace google\protobuf\compiler {
             $f = new \DrSlump\Protobuf\Field();
             $f->number = 15;
             $f->name   = "file";
-            $f->rule   = \DrSlump\Protobuf::RULE_REPEATED;
-            $f->type   = \DrSlump\Protobuf::TYPE_MESSAGE;
+            $f->rule   = \DrSlump\Protobuf\Protobuf::RULE_REPEATED;
+            $f->type   = \DrSlump\Protobuf\Protobuf::TYPE_MESSAGE;
              
             $f->reference = '\google\protobuf\compiler\CodeGeneratorResponse\File';
 
@@ -363,8 +363,8 @@ namespace google\protobuf\compiler\CodeGeneratorResponse {
             $f = new \DrSlump\Protobuf\Field();
             $f->number = 1;
             $f->name   = "name";
-            $f->rule   = \DrSlump\Protobuf::RULE_OPTIONAL;
-            $f->type   = \DrSlump\Protobuf::TYPE_STRING;
+            $f->rule   = \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL;
+            $f->type   = \DrSlump\Protobuf\Protobuf::TYPE_STRING;
 
             $descriptor->addField($f);
              
@@ -372,8 +372,8 @@ namespace google\protobuf\compiler\CodeGeneratorResponse {
             $f = new \DrSlump\Protobuf\Field();
             $f->number = 2;
             $f->name   = "insertion_point";
-            $f->rule   = \DrSlump\Protobuf::RULE_OPTIONAL;
-            $f->type   = \DrSlump\Protobuf::TYPE_STRING;
+            $f->rule   = \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL;
+            $f->type   = \DrSlump\Protobuf\Protobuf::TYPE_STRING;
 
             $descriptor->addField($f);
              
@@ -381,8 +381,8 @@ namespace google\protobuf\compiler\CodeGeneratorResponse {
             $f = new \DrSlump\Protobuf\Field();
             $f->number = 15;
             $f->name   = "content";
-            $f->rule   = \DrSlump\Protobuf::RULE_OPTIONAL;
-            $f->type   = \DrSlump\Protobuf::TYPE_STRING;
+            $f->rule   = \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL;
+            $f->type   = \DrSlump\Protobuf\Protobuf::TYPE_STRING;
 
             $descriptor->addField($f);
             

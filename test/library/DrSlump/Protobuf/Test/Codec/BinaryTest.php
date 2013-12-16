@@ -1,31 +1,24 @@
 <?php
 
-require_once __DIR__ . '/../library/DrSlump/Protobuf.php';
+namespace DrSlump\Protobuf\Test\Codec;
 
-error_reporting(E_ALL);
+use DrSlump\Protobuf;
+use DrSlump\Protobuf\Codec;
+use DrSlump\Protobuf\Test\protos;
 
-use \DrSlump\Protobuf;
-
-include_once __DIR__ . '/protos/simple.php';
-include_once __DIR__ . '/protos/complex.php';
-include_once __DIR__ . '/protos/repeated.php';
-include_once __DIR__ . '/protos/addressbook.php';
-include_once __DIR__ . '/protos/extension.php';
-
-
-class BinaryCodecTests extends \PHPUnit_Framework_TestCase
+class BinaryTest extends \PHPUnit_Framework_TestCase
 {
     function setUp()
     {
-        $codec = new Protobuf\Codec\Binary();
-        Protobuf::setDefaultCodec($codec);
+        $codec = new Codec\Binary();
+        Protobuf\Protobuf::setDefaultCodec($codec);
 
-        $this->bin_simple = file_get_contents(__DIR__ . '/protos/simple.bin');
-        $this->bin_book = file_get_contents(__DIR__ . '/protos/addressbook.bin');
-        $this->bin_repeated_string = file_get_contents(__DIR__ . '/protos/repeated-string.bin');
-        $this->bin_repeated_int32 = file_get_contents(__DIR__ . '/protos/repeated-int32.bin');
-        $this->bin_repeated_nested = file_get_contents(__DIR__ . '/protos/repeated-nested.bin');
-        $this->bin_ext = file_get_contents(__DIR__ . '/protos/extension.bin');
+        $this->bin_simple = file_get_contents(dirname(__DIR__) . '/protos/simple.bin');
+        $this->bin_book = file_get_contents(dirname(__DIR__) . '/protos/addressbook.bin');
+        $this->bin_repeated_string = file_get_contents(dirname(__DIR__) . '/protos/repeated-string.bin');
+        $this->bin_repeated_int32 = file_get_contents(dirname(__DIR__) . '/protos/repeated-int32.bin');
+        $this->bin_repeated_nested = file_get_contents(dirname(__DIR__) . '/protos/repeated-nested.bin');
+        $this->bin_ext = file_get_contents(dirname(__DIR__) . '/protos/extension.bin');
     }
 
     function testSerializeSimpleMessageComparingTypesWithProtoc()
@@ -53,13 +46,13 @@ class BinaryCodecTests extends \PHPUnit_Framework_TestCase
 
         foreach ($fields as $field=>$values) {
             foreach ($values as $value) {
-                $simple = new Tests\Simple();
+                $simple = new protos\Simple();
                 $simple->$field = $value;
-                $bin = Protobuf::encode($simple);
+                $bin = Protobuf\Protobuf::encode($simple);
 
                 if (is_string($value)) $value = '"' . $value . '"';
 
-                exec("echo '$field: $value' | protoc --encode=tests.Simple -Itests tests/protos/simple.proto", $out);
+                exec("echo '$field: $value' | protoc --encode=test.Simple -Itests test/protos/simple.proto", $out);
 
                 $out = implode("\n", $out);
 
@@ -74,10 +67,10 @@ class BinaryCodecTests extends \PHPUnit_Framework_TestCase
                           ? '"' . $value . '"'
                           : $value;
 
-                exec("echo '$field: $cmdValue' | protoc --encode=tests.Simple -Itests tests/protos/simple.proto", $out);
+                exec("echo '$field: $cmdValue' | protoc --encode=test.Simple -Itests test/protos/simple.proto", $out);
                 $out = implode("\n", $out);
 
-                $simple = Protobuf::decode('\tests\Simple', $out);
+                $simple = Protobuf\Protobuf::decode('\test\Simple', $out);
 
                 // Hack the comparison for float precision
                 if (is_float($simple->$field)) {
@@ -93,114 +86,114 @@ class BinaryCodecTests extends \PHPUnit_Framework_TestCase
 
     function testSerializeEnumComparingWithProtoc()
     {
-        $complex = new Tests\Complex();
+        $complex = new protos\Complex();
 
-        exec("echo 'enum: FOO' | protoc --encode=tests.Complex -Itests tests/protos/complex.proto", $protocbin);
+        exec("echo 'enum: FOO' | protoc --encode=test.Complex -Itests test/protos/complex.proto", $protocbin);
         $protocbin = implode("\n", $protocbin);
 
         // Check encoding an enum
-        $complex->enum = Tests\Complex\Enum::FOO;
-        $encbin = Protobuf::encode($complex);
+        $complex->enum = protos\Complex\Enum::FOO;
+        $encbin = Protobuf\Protobuf::encode($complex);
 
         $this->assertEquals(bin2hex($encbin), bin2hex($protocbin), "Encoding Enum field");
 
         // Check decoding an enum
-        $complex = Protobuf::decode('\tests\Complex', $protocbin);
-        $this->assertEquals($complex->enum, Tests\Complex\Enum::FOO, "Decoding Enum field");
+        $complex = Protobuf\Protobuf::decode('\test\Complex', $protocbin);
+        $this->assertEquals($complex->enum, protos\Complex\Enum::FOO, "Decoding Enum field");
     }
 
     function testSerializeNestedMessageComparingWithProtoc()
     {
-        exec("echo 'nested { foo: \"FOO\" }' | protoc --encode=tests.Complex -Itests tests/protos/complex.proto", $protocbin);
+        exec("echo 'nested { foo: \"FOO\" }' | protoc --encode=test.Complex -Itests test/protos/complex.proto", $protocbin);
         $protocbin = implode("\n", $protocbin);
 
         // Encoding
-        $complex = new Tests\Complex();
-        $complex->nested = new Tests\Complex\Nested();
+        $complex = new protos\Complex();
+        $complex->nested = new protos\Complex\Nested();
         $complex->nested->foo = 'FOO';
-        $encbin = Protobuf::encode($complex);
+        $encbin = Protobuf\Protobuf::encode($complex);
 
         $this->assertEquals(bin2hex($encbin), bin2hex($protocbin), "Encoding nested message");
 
         // Decoding
-        $complex = Protobuf::decode('\tests\Complex', $protocbin);
+        $complex = Protobuf\Protobuf::decode('\test\Complex', $protocbin);
         $this->assertEquals($complex->nested->foo, 'FOO', "Decoding nested message");
     }
 
     function testSerializeMessageWithRepeatedFields()
     {
-        $repeated = new Tests\Repeated();
+        $repeated = new protos\Repeated();
         $repeated->addString('one');
         $repeated->addString('two');
         $repeated->addString('three');
-        $bin = Protobuf::encode($repeated);
+        $bin = Protobuf\Protobuf::encode($repeated);
         $this->assertEquals($bin, $this->bin_repeated_string);
 
-        $repeated = new Tests\Repeated();
+        $repeated = new protos\Repeated();
         $repeated->addInt(1);
         $repeated->addInt(2);
         $repeated->addInt(3);
-        $bin = Protobuf::encode($repeated);
+        $bin = Protobuf\Protobuf::encode($repeated);
         $this->assertEquals($bin, $this->bin_repeated_int32);
 
 
-        $repeated = new Tests\Repeated();
-        $nested = new Tests\Repeated\Nested();
+        $repeated = new protos\Repeated();
+        $nested = new protos\Repeated\Nested();
         $nested->setId(1);
         $repeated->addNested($nested);
-        $nested = new Tests\Repeated\Nested();
+        $nested = new protos\Repeated\Nested();
         $nested->setId(2);
         $repeated->addNested($nested);
-        $nested = new Tests\Repeated\Nested();
+        $nested = new protos\Repeated\Nested();
         $nested->setId(3);
         $repeated->addNested($nested);
-        $bin = Protobuf::encode($repeated);
+        $bin = Protobuf\Protobuf::encode($repeated);
         $this->assertEquals($bin, $this->bin_repeated_nested);
     }
 
     function testSerializeComplexMessage()
     {
-        $book = new Tests\AddressBook();
-        $person = new Tests\Person();
+        $book = new protos\AddressBook();
+        $person = new protos\Person();
         $person->name = 'John Doe';
         $person->id = 2051;
         $person->email = 'john.doe@gmail.com';
-        $phone = new Tests\Person\PhoneNumber;
+        $phone = new protos\PhoneNumber;
         $phone->number = '1231231212';
-        $phone->type = Tests\Person\PhoneType::HOME;
+        $phone->type = protos\PhoneType::HOME;
         $person->addPhone($phone);
-        $phone = new Tests\Person\PhoneNumber;
+        $phone = new protos\PhoneNumber;
         $phone->number = '55512321312';
-        $phone->type = Tests\Person\PhoneType::MOBILE;
+        $phone->type = protos\PhoneType::MOBILE;
         $person->addPhone($phone);
         $book->addPerson($person);
 
-        $person = new Tests\Person();
+        $person = new Person();
         $person->name = 'Iván Montes';
         $person->id = 23;
         $person->email = 'drslump@pollinimini.net';
-        $phone = new Tests\Person\PhoneNumber;
+        $phone = new PhoneNumber;
         $phone->number = '3493123123';
-        $phone->type = Tests\Person\PhoneType::WORK;
+        $phone->type = PhoneType::WORK;
         $person->addPhone($phone);
         $book->addPerson($person);
 
-        $bin = Protobuf::encode($book);
+        $bin = Protobuf\Protobuf::encode($book);
         $this->assertEquals($bin, $this->bin_book);
     }
 
     function testSerializeMessageWithExtendedFields()
     {
-        $ext = new Tests\ExtA();
+        $ext = new ExtA();
         $ext->first = 'FIRST';
-        $ext['tests\ExtB\second'] = 'SECOND';
-        $bin = Protobuf::encode($ext);
+        $ext['test\ExtB\second'] = 'SECOND';
+        $bin = Protobuf\Protobuf::encode($ext);
         $this->assertEquals($bin, $this->bin_ext);
     }
 
     function testUnserializeSimpleMessage()
     {
-        $simple = Protobuf::decode('Tests\Simple', $this->bin_simple);
+        $simple = Protobuf\Protobuf::decode('Tests\Simple', $this->bin_simple);
         $this->assertInstanceOf($simple, 'Tests\Simple');
         $this->assertEquals($simple->string, 'foo');
         $this->assertEquals($simple->int32, -123456789);
@@ -208,15 +201,15 @@ class BinaryCodecTests extends \PHPUnit_Framework_TestCase
 
     function testUnserializeMessageWithRepeatedFields()
     {
-        $repeated = Protobuf::decode('Tests\Repeated', $this->bin_repeated_string);
+        $repeated = Protobuf\Protobuf::decode('Tests\Repeated', $this->bin_repeated_string);
         $this->assertInstanceOf($repeated, 'Tests\Repeated');
         $this->assertEquals($repeated->getString(), array('one', 'two', 'three'));
 
-        $repeated = Protobuf::decode('Tests\Repeated', $this->bin_repeated_int32);
+        $repeated = Protobuf\Protobuf::decode('Tests\Repeated', $this->bin_repeated_int32);
         $this->assertInstanceOf($repeated, 'Tests\Repeated');
         $this->assertEquals($repeated->getInt(), array(1,2,3));
 
-        $repeated = Protobuf::decode('Tests\Repeated', $this->bin_repeated_nested);
+        $repeated = Protobuf\Protobuf::decode('Tests\Repeated', $this->bin_repeated_nested);
         $this->assertInstanceOf($repeated, 'Tests\Repeated');
         foreach ($repeated->getNested() as $i=>$nested) {
             $this->assertEquals($nested->getId(), $i+1);
@@ -225,7 +218,7 @@ class BinaryCodecTests extends \PHPUnit_Framework_TestCase
 
     function testUnserializeComplexMessage()
     {
-        $complex = Protobuf::decode('Tests\AddressBook', $this->bin_book);
+        $complex = Protobuf\Protobuf::decode('Tests\AddressBook', $this->bin_book);
         $this->assertEquals(count($complex->person), 2);
         $this->assertEquals($complex->getPerson(0)->name, 'John Doe');
         $this->assertEquals($complex->getPerson(1)->name, 'Iván Montes');
@@ -234,28 +227,28 @@ class BinaryCodecTests extends \PHPUnit_Framework_TestCase
 
     function testUnserializeMessageWithExtendedFields()
     {
-        $ext = Protobuf::decode('Tests\ExtA', $this->bin_ext);
+        $ext = Protobuf\Protobuf::decode('Tests\ExtA', $this->bin_ext);
         $this->assertEquals($ext->first, 'FIRST');
-        $this->assertEquals($ext['tests\ExtB\second'], 'SECOND');
+        $this->assertEquals($ext['test\ExtB\second'], 'SECOND');
     }
 
     function testMultiCodecSimpleMessage()
     {
-        $jsonCodec = new Protobuf\Codec\Json();
-        $simple = Protobuf::decode('Tests\Simple', $this->bin_simple);
+        $jsonCodec = new Codec\Json();
+        $simple = Protobuf\Protobuf::decode('Tests\Simple', $this->bin_simple);
         $json = $jsonCodec->encode($simple);
-        $simple = $jsonCodec->decode(new \Tests\Simple, $json);
-        $bin = Protobuf::encode($simple);
+        $simple = $jsonCodec->decode(new Simple(), $json);
+        $bin = Protobuf\Protobuf::encode($simple);
         $this->assertEquals($bin, $this->bin_simple);
     }
 
     function testMultiCodecMessageWithRepeatedFields()
     {
-        $jsonCodec = new Protobuf\Codec\Json();
-        $repeated = Protobuf::decode('Tests\Repeated', $this->bin_repeated_nested);
+        $jsonCodec = new Codec\Json();
+        $repeated = Protobuf\Protobuf::decode('Tests\Repeated', $this->bin_repeated_nested);
         $json = $jsonCodec->encode($repeated);
-        $repeated = $jsonCodec->decode(new \Tests\Repeated, $json);
-        $bin = Protobuf::encode($repeated);
+        $repeated = $jsonCodec->decode(new Repeated(), $json);
+        $bin = Protobuf\Protobuf::encode($repeated);
         $this->assertEquals($bin, $this->bin_repeated_nested);
     }
     

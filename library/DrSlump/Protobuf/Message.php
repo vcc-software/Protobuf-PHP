@@ -2,8 +2,6 @@
 
 namespace DrSlump\Protobuf;
 
-use DrSlump\Protobuf;
-
 /**
  *
  * Public fields are generated as PhpDoc properties
@@ -83,7 +81,7 @@ class Message implements MessageInterface
      * @param string $data
      * @param CodecInterface|null $codec
      */
-    public function parse($data, Protobuf\CodecInterface $codec = null)
+    public function parse($data, CodecInterface $codec = null)
     {
         $codec = Protobuf::getCodec($codec);
         $codec->decode($this, $data);
@@ -95,7 +93,7 @@ class Message implements MessageInterface
      * @param CodecInterface|null $codec
      * @return string
      */
-    public function serialize(Protobuf\CodecInterface $codec = null)
+    public function serialize(CodecInterface $codec = null)
     {
         $codec = Protobuf::getCodec($codec);
         return $codec->encode($this);
@@ -264,7 +262,7 @@ class Message implements MessageInterface
      * @param \DrSlump\Protobuf\Unknown string $field
      * @return \DrSlump\Protobuf\Message - Fluent Interface
      */
-    public function addUnknown(Protobuf\Unknown $field)
+    public function addUnknown(Unknown $field)
     {
         $this->_unknown[] = $field;
     }
@@ -292,7 +290,7 @@ class Message implements MessageInterface
     {
         if (isset($this->_values[$name])) {
             $value = $this->_values[$name];
-            if ($value instanceof Protobuf\LazyValue) {
+            if ($value instanceof LazyValue) {
                 $this->_values[$name] = $value();
             }
 

@@ -2,8 +2,6 @@
 
 namespace DrSlump\Protobuf;
 
-use DrSlump\Protobuf;
-
 /**
  *
  * To access fields by their name you can use generated getters/setters methods if
@@ -50,7 +48,7 @@ interface MessageInterface extends \ArrayAccess
      * @param string $data
      * @param CodecInterface|null $codec
      */
-    public function parse($data, Protobuf\CodecInterface $codec = null);
+    public function parse($data, CodecInterface $codec = null);
 
     /**
      * Serialize the current object data
@@ -58,7 +56,7 @@ interface MessageInterface extends \ArrayAccess
      * @param CodecInterface|null $codec
      * @return string
      */
-    public function serialize(Protobuf\CodecInterface $codec = null);
+    public function serialize(CodecInterface $codec = null);
 
      /**
      * Clears all the data in the message object
@@ -153,7 +151,7 @@ interface MessageInterface extends \ArrayAccess
      * @param \DrSlump\Protobuf\Unknown string $field
      * @return \DrSlump\Protobuf\Message - Fluent Interface
      */
-    public function addUnknown(Protobuf\Unknown $field);
+    public function addUnknown(Unknown $field);
 
     /**
      * Obtain the list of unknown fields in this message

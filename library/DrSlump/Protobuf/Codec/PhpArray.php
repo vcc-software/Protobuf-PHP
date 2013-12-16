@@ -44,7 +44,7 @@ class PhpArray extends Protobuf\CodecAbstract
 
     protected function encodeMessage(Protobuf\MessageInterface $message)
     {
-        $descriptor = Protobuf::getRegistry()->getDescriptor($message);
+        $descriptor = Protobuf\Protobuf::getRegistry()->getDescriptor($message);
 
         $strict = $this->getOption('strict');
         $useTagNumber = $this->getOption('tags');
@@ -98,7 +98,7 @@ class PhpArray extends Protobuf\CodecAbstract
     protected function decodeMessage(Protobuf\MessageInterface $message, $data)
     {
         // Get message descriptor
-        $descriptor = Protobuf::getRegistry()->getDescriptor($message);
+        $descriptor = Protobuf\Protobuf::getRegistry()->getDescriptor($message);
 
         $isLazy = $this->getOption('lazy');
         $useTagNumber = $this->getOption('tags');
@@ -122,7 +122,7 @@ class PhpArray extends Protobuf\CodecAbstract
                 $v = is_array($v) && (empty($v) || is_int(key($v))) ? $v : array($v);
 
                 // If we are packing lazy values use a LazyRepeat as container
-                if ($isLazy && $field->getType() === Protobuf::TYPE_MESSAGE) {
+                if ($isLazy && $field->getType() === Protobuf\Protobuf::TYPE_MESSAGE) {
                     $v = new Protobuf\LazyRepeat($v);
                     $v->codec = $this;
                     $v->descriptor = $field;
@@ -151,7 +151,7 @@ class PhpArray extends Protobuf\CodecAbstract
     protected function filterValue($value, Protobuf\Field $field)
     {
         switch ($field->getType()) {
-            case Protobuf::TYPE_MESSAGE:
+            case Protobuf\Protobuf::TYPE_MESSAGE:
                 // Tell apart encoding and decoding
                 if ($value instanceof Protobuf\MessageInterface) {
                     return $this->encodeMessage($value);
@@ -169,17 +169,17 @@ class PhpArray extends Protobuf\CodecAbstract
                     }
                 }
 
-            case Protobuf::TYPE_BOOL:
+            case Protobuf\Protobuf::TYPE_BOOL:
                 if ($value === true || $value === false) {
                     return $value;
                 }
                 return filter_var($value, FILTER_VALIDATE_BOOLEAN);
 
-            case Protobuf::TYPE_STRING:
-            case Protobuf::TYPE_BYTES:
+            case Protobuf\Protobuf::TYPE_STRING:
+            case Protobuf\Protobuf::TYPE_BYTES:
                 return (string)$value;
-            case Protobuf::TYPE_FLOAT:
-            case Protobuf::TYPE_DOUBLE:
+            case Protobuf\Protobuf::TYPE_FLOAT:
+            case Protobuf\Protobuf::TYPE_DOUBLE:
                 return filter_var($value, FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE);
             // Assume the rest are ints
             default:

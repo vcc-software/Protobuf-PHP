@@ -8,7 +8,7 @@ class Repeated extends \DrSlump\Protobuf\AnnotatedMessage
     public $string;
     /** @protobuf(tag=2, type=int32, repeated) */
     public $int;
-    /** @protobuf(tag=3, type=message, reference=tests\Annotated\RepeatedNested, repeated) */
+    /** @protobuf(tag=3, type=message, reference=test\Annotated\RepeatedNested, repeated) */
     public $nested;
 }
 

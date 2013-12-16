@@ -34,7 +34,7 @@ class Extension extends Native
      */
     public function decodeAsArray(Protobuf\MessageInterface $message, $data)
     {
-        $descriptor = Protobuf::getRegistry()->getDescriptor($message);
+        $descriptor = Protobuf\Protobuf::getRegistry()->getDescriptor($message);
         $name = $descriptor->getName();
 
         $res = $this->_describe($descriptor);
@@ -64,13 +64,13 @@ class Extension extends Native
             $type = $field->getType();
 
             // Nested messages need to be populated first
-            if ($type === Protobuf::TYPE_MESSAGE) {
+            if ($type === Protobuf\Protobuf::TYPE_MESSAGE) {
                 // When in lazy decoding mode we handle nested messages as binary fields
                 if ($lazy) {
-                    $type = Protobuf::TYPE_BYTES;
+                    $type = Protobuf\Protobuf::TYPE_BYTES;
                 } else {
                     // Try to obtain the message descriptor resource for this field
-                    $descr = Protobuf::getRegistry()->getDescriptor($field->getReference());
+                    $descr = Protobuf\Protobuf::getRegistry()->getDescriptor($field->getReference());
                     if (!$descr) {
                         throw new \RuntimeException('Unable to find a descriptor for message "' . $field->getReference() . '"');
                     }
@@ -88,7 +88,7 @@ class Extension extends Native
                 $type,
                 $field->getName(),
                 $field->isPacked() ? PROTOBUF_FLAG_PACKED : 0,
-                $type === Protobuf::TYPE_MESSAGE ? $nested : NULL
+                $type === Protobuf\Protobuf::TYPE_MESSAGE ? $nested : NULL
             );
         }
 
@@ -102,7 +102,7 @@ class Extension extends Native
      */
     protected function _decodeMessage(\DrSlump\Protobuf\MessageInterface $message, $data)
     {
-        $descriptor = Protobuf::getRegistry()->getDescriptor($message);
+        $descriptor = Protobuf\Protobuf::getRegistry()->getDescriptor($message);
         $name = $descriptor->getName();
 
         $res = $this->_describe($descriptor);
@@ -128,8 +128,8 @@ class Extension extends Native
 
             $value = $ret[$name];
 
-            if ($field->getType() === Protobuf::TYPE_MESSAGE) {
-                if ($field->getRule() === Protobuf::RULE_REPEATED) {
+            if ($field->getType() === Protobuf\Protobuf::TYPE_MESSAGE) {
+                if ($field->getRule() === Protobuf\Protobuf::RULE_REPEATED) {
                     $value = new Protobuf\LazyRepeat($value);
                     $value->codec = $this;
                     $value->descriptor = $field;
@@ -150,7 +150,7 @@ class Extension extends Native
 
     public function lazyDecode($field, $bytes)
     {
-        if ($field->getType() === Protobuf::TYPE_MESSAGE) {
+        if ($field->getType() === Protobuf\Protobuf::TYPE_MESSAGE) {
             $msg = $field->getReference();
             $msg = new $msg;
             return $this->_decodeMessage($msg, $bytes);
