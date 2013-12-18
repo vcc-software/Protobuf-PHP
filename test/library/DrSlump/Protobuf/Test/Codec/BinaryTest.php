@@ -46,13 +46,13 @@ class BinaryTest extends \PHPUnit_Framework_TestCase
 
         foreach ($fields as $field=>$values) {
             foreach ($values as $value) {
-                $simple = new protos\Simple();
+                $simple = new protos\simple();
                 $simple->$field = $value;
                 $bin = Protobuf\Protobuf::encode($simple);
 
                 if (is_string($value)) $value = '"' . $value . '"';
 
-                exec("echo '$field: $value' | protoc --encode=test.Simple -Itests test/protos/simple.proto", $out);
+                exec("echo '$field: $value' | protoc --encode=DrSlump.Protobuf.Test.protos.Simple -Itest test/library/DrSlump/Protobuf/Test/protos/simple.proto", $out);
 
                 $out = implode("\n", $out);
 
@@ -67,10 +67,10 @@ class BinaryTest extends \PHPUnit_Framework_TestCase
                           ? '"' . $value . '"'
                           : $value;
 
-                exec("echo '$field: $cmdValue' | protoc --encode=test.Simple -Itests test/protos/simple.proto", $out);
+                exec("echo '$field: $cmdValue' | protoc --encode=DrSlump.Protobuf.Test.protos.Simple -Itest test/library/DrSlump/Protobuf/Test/protos/simple.proto", $out);
                 $out = implode("\n", $out);
 
-                $simple = Protobuf\Protobuf::decode('\test\Simple', $out);
+                $simple = Protobuf\Protobuf::decode('\DrSlump\Protobuf\Test\protos\simple', $out);
 
                 // Hack the comparison for float precision
                 if (is_float($simple->$field)) {
@@ -88,7 +88,7 @@ class BinaryTest extends \PHPUnit_Framework_TestCase
     {
         $complex = new protos\Complex();
 
-        exec("echo 'enum: FOO' | protoc --encode=test.Complex -Itests test/protos/complex.proto", $protocbin);
+        exec("echo 'enum: FOO' | protoc --encode=DrSlump.Protobuf.Test.protos.Complex -Itest test/library/DrSlump/Protobuf/Test/protos/complex.proto", $protocbin);
         $protocbin = implode("\n", $protocbin);
 
         // Check encoding an enum
@@ -98,13 +98,13 @@ class BinaryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(bin2hex($encbin), bin2hex($protocbin), "Encoding Enum field");
 
         // Check decoding an enum
-        $complex = Protobuf\Protobuf::decode('\test\Complex', $protocbin);
+        $complex = Protobuf\Protobuf::decode('\DrSlump\Protobuf\Test\protos\Complex', $protocbin);
         $this->assertEquals($complex->enum, protos\Complex\Enum::FOO, "Decoding Enum field");
     }
 
     function testSerializeNestedMessageComparingWithProtoc()
     {
-        exec("echo 'nested { foo: \"FOO\" }' | protoc --encode=test.Complex -Itests test/protos/complex.proto", $protocbin);
+        exec("echo 'nested { foo: \"FOO\" }' | protoc --encode=DrSlump.Protobuf.Test.protos.Complex -Itest test/library/DrSlump/Protobuf/Test/protos/complex.proto", $protocbin);
         $protocbin = implode("\n", $protocbin);
 
         // Encoding
@@ -116,7 +116,7 @@ class BinaryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(bin2hex($encbin), bin2hex($protocbin), "Encoding nested message");
 
         // Decoding
-        $complex = Protobuf\Protobuf::decode('\test\Complex', $protocbin);
+        $complex = Protobuf\Protobuf::decode('\DrSlump\Protobuf\Test\protos\Complex', $protocbin);
         $this->assertEquals($complex->nested->foo, 'FOO', "Decoding nested message");
     }
 

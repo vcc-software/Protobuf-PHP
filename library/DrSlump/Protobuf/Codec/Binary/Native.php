@@ -124,7 +124,7 @@ class Native extends Protobuf\CodecAbstract
 
                 $len = $reader->varint();
                 $until = $reader->pos() + $len;
-                $wire = $this->getWireType($type, $key);
+                $wire = $this->getWireType($type, $wire);
                 while ($reader->pos() < $until) {
                     $item = $this->decodeSimpleType($reader, $type, $wire);
                     $repeated[$tag][] = $item;
