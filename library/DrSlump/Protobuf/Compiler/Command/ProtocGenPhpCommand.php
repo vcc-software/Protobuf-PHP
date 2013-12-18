@@ -109,20 +109,20 @@ class ProtocGenPhpCommand extends Command
         exec("$protocBin --version", $out, $return);
 
         if (0 !== $return && 1 !== $return) {
-            $output->writeln("ERROR: Unable to find the protoc command.");
-            $output->writeln("       Please make sure it's installed and available in the path.");
+            $output->writeln("<error>Unable to find the protoc command.");
+            $output->writeln("       Please make sure it's installed and available in the path.</error>");
             return 1;
         }
 
         if (!preg_match('/[0-9\.]+/', $out[0], $m)) {
-            $output->writeln("ERROR: Unable to get protoc command version.");
-            $output->writeln("       Please make sure it's installed and available in the path.");
+            $output->writeln("<error>Unable to get protoc command version.");
+            $output->writeln("       Please make sure it's installed and available in the path.</error>");
             return 1;
         }
 
         if (version_compare($m[0], '2.3.0') < 0) {
-            $output->writeln("ERROR: The protoc command in your system is too old.");
-            $output->writeln("       Minimum version required is 2.3.0 but found {$m[0]}.");
+            $output->writeln("<error>The protoc command in your system is too old.");
+            $output->writeln("       Minimum version required is 2.3.0 but found {$m[0]}.</error>");
             return 1;
         }
 
@@ -143,7 +143,7 @@ class ProtocGenPhpCommand extends Command
         foreach ($input->getArgument('protos') as $proto) {
             $realpath = realpath($proto);
             if (FALSE === $realpath) {
-                $output->writeln("ERROR: File '$proto' does not exist");
+                $output->writeln("<error>: File '$proto' does not exist</error>");
                 return 1;
             }
 
@@ -199,11 +199,14 @@ class ProtocGenPhpCommand extends Command
         $cmdStr = implode(' ', $cmd);
 
         // Run command with stderr redirected to stdout
-        passthru($cmdStr . ' 2>&1', $return);
+        exec($cmdStr . ' 2>&1', $stdout, $return);
 
         if ($return !== 0) {
-            $output->writeln('ERROR: protoc exited with an error (' . $return . ') when executed with: ');
-            $output->writeln('  ' . implode(" \\\n    ", $cmd));
+            $output->writeln('<error>' . join("\n", $stdout) .'</error >');
+            $output->writeln('');
+            $output->writeln('<error>protoc exited with an error (' . $return . ') when executed with: </error>');
+            $output->writeln('');
+            $output->writeln('<error>  ' . implode(" \\\n    ", $cmd) . '</error>');
         }
         return $return;
     }
