@@ -73,21 +73,10 @@ $data = $codec->encode($book);
 $data = $book->serialize($codec);
 ```
 
+
 ## Installation
 
-Install with Pear
-
-    pear channel-discover pear.pollinimini.net
-    pear install drslump/Protobuf-beta
-
-You can also get the latest version by checking out a copy of the
-repository in your computer.
-
-The library will register an autoloader to include its dependencies by default. If 
-you prefer to handle this manually set the following define before including the 
-`DrSlump/Protobuf.php` file:
-
-    define('DRSLUMP_PROTOBUF_AUTOLOAD', false);
+    composer install
 
 
 ## Known issues
