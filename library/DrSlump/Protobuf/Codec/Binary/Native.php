@@ -96,7 +96,6 @@ class Native extends Protobuf\CodecAbstract
 
         // Keep reading until we reach the end or the limit
         while ($limit === NULL && !$reader->eof() || $limit !== NULL && $reader->pos() < $limit) {
-
             // Get initial varint with tag number and wire type
             $key = $reader->varint();
             if ($reader->eof()) break;
@@ -375,7 +374,7 @@ class Native extends Protobuf\CodecAbstract
                     }
                     $data = $subwriter->getBytes();
                     $writer->varint($key);
-                    $writer->varint(strlen($data));
+                    $writer->varint(mb_strlen($data, '8bit'));
                     $writer->write($data);
                 } else {
                     foreach($value as $val) {
@@ -388,7 +387,7 @@ class Native extends Protobuf\CodecAbstract
                         } else {
                             $writer->varint($key);
                             $data = $this->encodeMessage($val);
-                            $writer->varint(strlen($data));
+                            $writer->varint(mb_strlen($data, '8bit'));
                             $writer->write($data);
                         }
                     }
@@ -399,7 +398,7 @@ class Native extends Protobuf\CodecAbstract
             } else {
                 $writer->varint($key);
                 $data = $this->encodeMessage($value);
-                $writer->varint(strlen($data));
+                $writer->varint(mb_strlen($data, '8bit'));
                 $writer->write($data);
             }
         }
@@ -451,7 +450,7 @@ class Native extends Protobuf\CodecAbstract
 
             case Protobuf\Protobuf::TYPE_STRING:
             case Protobuf\Protobuf::TYPE_BYTES:
-                $writer->varint(strlen($value));
+                $writer->varint(mb_strlen($value, '8bit'));
                 $writer->write($value);
                 break;
 

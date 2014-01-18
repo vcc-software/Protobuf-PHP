@@ -44,7 +44,7 @@ class NativeWriter
     public function write($bytes, $length = null)
     {
         if ($length === NULL) {
-            $length = strlen($bytes);
+            $length = mb_strlen($bytes, '8bit');
         }
 
         $written = fwrite($this->_fd, $bytes, $length);
@@ -141,7 +141,7 @@ class NativeWriter
                 $rest = bcmod($dec, 2);
                 $dec = bcdiv($dec, 2, 0);
                 $bin = $rest . $bin;
-            } while ($dec > 0 && strlen($bin) < 7);
+            } while ($dec > 0 && mb_strlen($bin,'8bit') < 7);
 
             // Pack as a decimal and apply the flag
             $values[] = intval($bin, 2) | 0x80;
@@ -248,7 +248,7 @@ class NativeWriter
             do {
                 $bin = bcmod($dec, 2) . $bin;
                 $dec = bcdiv($dec, 2, 0);
-            } while (strlen($bin) < 8);
+            } while (mb_strlen($bin, '8bit') < 8);
 
             // Pack the byte
             $bytes .= chr(intval($bin, 2));

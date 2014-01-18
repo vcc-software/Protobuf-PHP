@@ -45,7 +45,7 @@ class NativeReader
             $this->_str = $fdOrString;
         }
 
-        $this->_len = strlen($this->_str);
+        $this->_len = mb_strlen($this->_str, '8bit');
         $this->_ofs = 0;
     }
 
@@ -62,7 +62,7 @@ class NativeReader
         if ($length < 1) return '';
 
         $bytes = substr($this->_str, $this->_ofs, $length);
-        $this->_ofs += strlen($bytes);
+        $this->_ofs += mb_strlen($bytes, '8bit');
 
         return $bytes;
     }
