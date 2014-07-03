@@ -66,31 +66,31 @@ abstract class AnnotatedMessage extends Message
 
             // Convert type name to its numeric constant
             switch (strtolower($options['type'])) {
-            case 'double'  : $f->type = Protobuf::TYPE_DOUBLE; break;
-            case 'float'   : $f->type = Protobuf::TYPE_FLOAT; break;
-            case 'int64'   : $f->type = Protobuf::TYPE_INT64; break;
-            case 'uint64'  : $f->type = Protobuf::TYPE_UINT64; break;
-            case 'int32'   : $f->type = Protobuf::TYPE_INT32; break;
-            case 'fixed64' : $f->type = Protobuf::TYPE_FIXED64; break;
-            case 'fixed32' : $f->type = Protobuf::TYPE_FIXED32; break;
-            case 'bool'    : $f->type = Protobuf::TYPE_BOOL; break;
-            case 'string'  : $f->type = Protobuf::TYPE_STRING; break;
-            case 'message' : $f->type = Protobuf::TYPE_MESSAGE; break;
-            case 'bytes'   : $f->type = Protobuf::TYPE_BYTES; break;
-            case 'uint32'  : $f->type = Protobuf::TYPE_UINT32; break;
-            case 'enum'    : $f->type = Protobuf::TYPE_ENUM; break;
-            case 'sfixed32': $f->type = Protobuf::TYPE_SFIXED32; break;
-            case 'sfixed64': $f->type = Protobuf::TYPE_SFIXED64; break;
-            case 'sint32'  : $f->type = Protobuf::TYPE_SINT32; break;
-            case 'sint64'  : $f->type = Protobuf::TYPE_SINT64; break;
+            case 'double'  : $f->type = Protobuf\Protobuf::TYPE_DOUBLE; break;
+            case 'float'   : $f->type = Protobuf\Protobuf::TYPE_FLOAT; break;
+            case 'int64'   : $f->type = Protobuf\Protobuf::TYPE_INT64; break;
+            case 'uint64'  : $f->type = Protobuf\Protobuf::TYPE_UINT64; break;
+            case 'int32'   : $f->type = Protobuf\Protobuf::TYPE_INT32; break;
+            case 'fixed64' : $f->type = Protobuf\Protobuf::TYPE_FIXED64; break;
+            case 'fixed32' : $f->type = Protobuf\Protobuf::TYPE_FIXED32; break;
+            case 'bool'    : $f->type = Protobuf\Protobuf::TYPE_BOOL; break;
+            case 'string'  : $f->type = Protobuf\Protobuf::TYPE_STRING; break;
+            case 'message' : $f->type = Protobuf\Protobuf::TYPE_MESSAGE; break;
+            case 'bytes'   : $f->type = Protobuf\Protobuf::TYPE_BYTES; break;
+            case 'uint32'  : $f->type = Protobuf\Protobuf::TYPE_UINT32; break;
+            case 'enum'    : $f->type = Protobuf\Protobuf::TYPE_ENUM; break;
+            case 'sfixed32': $f->type = Protobuf\Protobuf::TYPE_SFIXED32; break;
+            case 'sfixed64': $f->type = Protobuf\Protobuf::TYPE_SFIXED64; break;
+            case 'sint32'  : $f->type = Protobuf\Protobuf::TYPE_SINT32; break;
+            case 'sint64'  : $f->type = Protobuf\Protobuf::TYPE_SINT64; break;
             default:
                 throw new \InvalidArgumentException('Type ' . $options['type'] . ' is not recognized as valid for property ' . $prop->getName());
             }
 
             // Define the rule type
-            $f->rule = Protobuf::RULE_OPTIONAL;
-            if (!empty($options['required'])) $f->rule = Protobuf::RULE_REQUIRED;
-            if (!empty($options['repeated'])) $f->rule = Protobuf::RULE_REPEATED;
+            $f->rule = Protobuf\Protobuf::RULE_OPTIONAL;
+            if (!empty($options['required'])) $f->rule = Protobuf\Protobuf::RULE_REQUIRED;
+            if (!empty($options['repeated'])) $f->rule = Protobuf\Protobuf::RULE_REPEATED;
 
             // Check if it's flagged as packed
             if (isset($options['packed'])) {
@@ -100,7 +100,7 @@ abstract class AnnotatedMessage extends Message
             // Get the reference
             if (isset($options['reference'])) {
                 $f->reference = $options['reference'];
-            } else if ($f->type === Protobuf::TYPE_MESSAGE || $f->type === Protobuf::TYPE_ENUM) {
+            } else if ($f->type === Protobuf\Protobuf::TYPE_MESSAGE || $f->type === Protobuf\Protobuf::TYPE_ENUM) {
                 throw new \InvalidArgumentException('Property ' . $prop->getName() . ' requires the "reference" option');
             }
 
