@@ -1,11 +1,19 @@
-<?php /*
+<?php
 
-    Receives the following variables:
+/**
+ * @var $this DrSlump\Protobuf\Compiler\AbstractGenerator
+ */
 
-        $namespace - The current namespace (aka package) for the file
-        $data - A google.protobuf.DescriptorProto object
 
-    */ ?>
+/*
+
+   Receives the following variables:
+
+       $namespace - The current namespace (aka package) for the file
+       $data - A google.protobuf.DescriptorProto object
+
+   */
+?>
 namespace <?php echo $this->ns($namespace)?> {
 
     // @@protoc_insertion_point(scope_namespace)
@@ -168,12 +176,21 @@ namespace <?php echo $this->ns($namespace)?> {
 
         /**
          * Get "<?php echo $name?>" value
+         * <?php if ($this->rule($f) == \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL): ?>
+         * @return \PhpOption\Option of type (<?php echo $this->doctype($f)?>)
+         *       <?php else: ?>
+         * @return <?php echo $this->doctype($f)?>
+         *       <?php endif; ?>
          *
-         * @return <?php echo $this->doctype($f)?> 
+         *
          */
         public function get<?php echo $Name?>()
         {
+            <?php if ($this->rule($f) == \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL): ?>
+            return \PhpOption\Option::fromValue($this-><?php echo $name?>);
+            <?php else: ?>
             return $this-><?php echo $name?>;
+            <?php endif; ?>
         }
 
         /**

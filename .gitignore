@@ -1,4 +1,4 @@
-*.lock
+build
 vendor
 *.iml
 .idea
