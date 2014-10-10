@@ -17,7 +17,7 @@ class CommentsParser
         'rpc'     => 'rpc\s+([A-Z0-9_]+)[^;]+'
     );
 
-    /** @var string - The regular expresion for the tokenizer */
+    /** @var string - The regular expression for the tokenizer */
     protected $regexp;
 
     public function __construct()
