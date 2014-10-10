@@ -131,15 +131,15 @@ namespace <?php echo $this->ns($namespace)?> {
         /**
          * Get "<?php echo $name?>" value
          *
-         * @return <?php echo $this->doctype($f)?>[]
+         * @return \PhpOption\Option of type <?php echo $this->doctype($f)?>[]
          */
         public function get<?php echo $Name?>($idx = null)
         {
-            if (NULL !== $idx) {
-                return $this-><?php echo $name?>[$idx];
+            if (NULL == $idx || !array_key_exists($idx, $this-><?php echo $name?>) {
+                return  \PhpOption\None::create();
             }
 
-            return $this-><?php echo $name?>;
+            return new \PhpOption\Some($this-><?php echo $name?>[$idx])
         }
 
         /**
@@ -149,7 +149,7 @@ namespace <?php echo $this->ns($namespace)?> {
          */
         public function get<?php echo $Name?>List()
         {
-            return $this->get<?php echo $Name?>();
+            return $this-><?php echo $name?>;
         }
 
         /**
@@ -176,17 +176,17 @@ namespace <?php echo $this->ns($namespace)?> {
 
         /**
          * Get "<?php echo $name?>" value
-         * <?php if ($this->rule($f) == \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL): ?>
+         <?php if ($f->label == \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL): ?>
          * @return \PhpOption\Option of type (<?php echo $this->doctype($f)?>)
-         *       <?php else: ?>
+         <?php else: ?>
          * @return <?php echo $this->doctype($f)?>
-         *       <?php endif; ?>
+         <?php endif; ?>
          *
          *
          */
         public function get<?php echo $Name?>()
         {
-            <?php if ($this->rule($f) == \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL): ?>
+            <?php if ($f->label == \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL): ?>
             return \PhpOption\Option::fromValue($this-><?php echo $name?>);
             <?php else: ?>
             return $this-><?php echo $name?>;
