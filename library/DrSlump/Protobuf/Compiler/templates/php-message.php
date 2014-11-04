@@ -135,7 +135,7 @@ namespace <?php echo $this->ns($namespace)?> {
          */
         public function get<?php echo $Name?>($idx = null)
         {
-            if (NULL == $idx || !array_key_exists($idx, $this-><?php echo $name?>) {
+            if (NULL == $idx || !array_key_exists($idx, $this-><?php echo $name?>)) {
                 return  \PhpOption\None::create();
             }
 
