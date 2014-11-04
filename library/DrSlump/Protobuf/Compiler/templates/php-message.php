@@ -139,7 +139,7 @@ namespace <?php echo $this->ns($namespace)?> {
                 return  \PhpOption\None::create();
             }
 
-            return new \PhpOption\Some($this-><?php echo $name?>[$idx])
+            return new \PhpOption\Some($this-><?php echo $name?>[$idx]);
         }
 
         /**
