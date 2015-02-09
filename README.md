@@ -35,7 +35,7 @@ For more information see the [included man pages](http://drslump.github.com/Prot
   - Template based code generation. Go crazy and customize the generated code :)
   - Include comments from .proto files in the generated files
   - Pluggable serialization backends (codecs)
-    - Standard Binary -- with optional [high performant C extension based decoding](ext/)
+    - Standard Binary
     - Standard TextFormat ¹
     - PhpArray
     - JSON
@@ -44,7 +44,6 @@ For more information see the [included man pages](http://drslump.github.com/Prot
   - Reflection capabilities
   - Dynamic messages with annotations support (no code generation step required)
   - Lazy decoding of messages to improve the performance in real world scenarios
-  - Pear package for easy installation
 
 ¹ Only serialization is supported in this codec
 
