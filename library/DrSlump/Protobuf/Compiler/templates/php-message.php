@@ -153,14 +153,24 @@ namespace <?php echo $this->ns($namespace)?> {
         }
 
         /**
+         * @deprecated Use set<?php echo $Name?>List($value) instead
          * Set "<?php echo $name?>" value
-         *
          * @param <?php echo $this->doctype($f)?>[] $value
          */
         public function set<?php echo $Name?>($value)
         {
             return $this-><?php echo $name?> = $value;
         }
+
+        /**
+         * @deprecated
+         * Set "<?php echo $name?>" list
+         * @param <?php echo $this->doctype($f)?>[]|\Traversable $value
+         */
+         public function set<?php echo $Name?>List($value)
+         {
+             return $this-><?php echo $name?> = $value;
+         }
 
         /**
          * Add a new element to "<?php echo $name?>"
