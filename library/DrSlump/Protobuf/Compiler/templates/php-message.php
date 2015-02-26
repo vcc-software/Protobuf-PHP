@@ -163,7 +163,6 @@ namespace <?php echo $this->ns($namespace)?> {
         }
 
         /**
-         * @deprecated
          * Set "<?php echo $name?>" list
          * @param <?php echo $this->doctype($f)?>[]|\Traversable $value
          */
