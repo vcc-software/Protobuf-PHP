@@ -238,25 +238,25 @@ class Native extends Protobuf\CodecAbstract
 
     protected function getWireType($type, $default)
     {
-        static $map = array(
-            Protobuf\Protobuf::TYPE_INT32 => self::WIRE_VARINT,
-            Protobuf\Protobuf::TYPE_INT64 => self::WIRE_VARINT,
-            Protobuf\Protobuf::TYPE_UINT32 => self::WIRE_VARINT,
-            Protobuf\Protobuf::TYPE_UINT64 => self::WIRE_VARINT,
-            Protobuf\Protobuf::TYPE_SINT32 => self::WIRE_VARINT,
-            Protobuf\Protobuf::TYPE_SINT64 => self::WIRE_VARINT,
-            Protobuf\Protobuf::TYPE_BOOL => self::WIRE_VARINT,
-            Protobuf\Protobuf::TYPE_ENUM => self::WIRE_VARINT,
-            Protobuf\Protobuf::TYPE_FIXED64 => self::WIRE_FIXED64,
+        static $map = [
+            Protobuf\Protobuf::TYPE_INT32    => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_INT64    => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_UINT32   => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_UINT64   => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_SINT32   => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_SINT64   => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_BOOL     => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_ENUM     => self::WIRE_VARINT,
+            Protobuf\Protobuf::TYPE_FIXED64  => self::WIRE_FIXED64,
             Protobuf\Protobuf::TYPE_SFIXED64 => self::WIRE_FIXED64,
-            Protobuf\Protobuf::TYPE_DOUBLE => self::WIRE_FIXED64,
-            Protobuf\Protobuf::TYPE_STRING => self::WIRE_LENGTH,
-            Protobuf\Protobuf::TYPE_BYTES => self::WIRE_LENGTH,
-            Protobuf\Protobuf::TYPE_MESSAGE => self::WIRE_LENGTH,
-            Protobuf\Protobuf::TYPE_FIXED32 => self::WIRE_FIXED32,
+            Protobuf\Protobuf::TYPE_DOUBLE   => self::WIRE_FIXED64,
+            Protobuf\Protobuf::TYPE_STRING   => self::WIRE_LENGTH,
+            Protobuf\Protobuf::TYPE_BYTES    => self::WIRE_LENGTH,
+            Protobuf\Protobuf::TYPE_MESSAGE  => self::WIRE_LENGTH,
+            Protobuf\Protobuf::TYPE_FIXED32  => self::WIRE_FIXED32,
             Protobuf\Protobuf::TYPE_SFIXED32 => self::WIRE_FIXED32,
-            Protobuf\Protobuf::TYPE_FLOAT => self::WIRE_FIXED32
-        );
+            Protobuf\Protobuf::TYPE_FLOAT    => self::WIRE_FIXED32
+        ];
 
         // Unknown types just return the reported wire type
         return isset($map[$type]) ? $map[$type] : $default;
@@ -296,6 +296,7 @@ class Native extends Protobuf\CodecAbstract
             case Protobuf\Protobuf::TYPE_STRING:
             case Protobuf\Protobuf::TYPE_BYTES:
                 $length = $reader->varint();
+
                 return $reader->read($length);
 
             case Protobuf\Protobuf::TYPE_MESSAGE:
@@ -312,6 +313,7 @@ class Native extends Protobuf\CodecAbstract
                         return $reader->fixed64();
                     case self::WIRE_LENGTH:
                         $length = $reader->varint();
+
                         return $reader->read($length);
                     case self::WIRE_GROUP_START:
                     case self::WIRE_GROUP_END:

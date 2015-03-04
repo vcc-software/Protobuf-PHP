@@ -42,7 +42,7 @@ namespace <?php echo $this->ns($namespace)?> {
         {
             $descriptor = new \DrSlump\Protobuf\Descriptor(__CLASS__, '<?php echo $ns?>');
 
-            <?php if (!empty($data->field)): foreach ($data->field as $f): ?> 
+            <?php if (!empty($data->field)): foreach ($data->field as $f): ?>
             // <?php echo $this->rule($f)?> <?php echo $this->type($f)?> <?php echo $f->name?> = <?php echo $f->number?> 
             $f = new \DrSlump\Protobuf\Field();
             $f->number = <?php echo $f->number?>;
@@ -153,14 +153,23 @@ namespace <?php echo $this->ns($namespace)?> {
         }
 
         /**
+         * @deprecated Use set<?php echo $Name?>List($value) instead
          * Set "<?php echo $name?>" value
-         *
          * @param <?php echo $this->doctype($f)?>[] $value
          */
         public function set<?php echo $Name?>($value)
         {
             return $this-><?php echo $name?> = $value;
         }
+
+        /**
+         * Set "<?php echo $name?>" list
+         * @param <?php echo $this->doctype($f)?>[]|\Traversable $value
+         */
+         public function set<?php echo $Name?>List($value)
+         {
+             return $this-><?php echo $name?> = $value;
+         }
 
         /**
          * Add a new element to "<?php echo $name?>"

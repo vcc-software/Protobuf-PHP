@@ -198,6 +198,8 @@ class ProtocGenPhpCommand extends Command
 
         $cmdStr = implode(' ', $cmd);
 
+        $output->writeln("Generating protos with protoc -- $cmdStr");
+
         // Run command with stderr redirected to stdout
         exec($cmdStr . ' 2>&1', $stdout, $return);
 
@@ -207,6 +209,8 @@ class ProtocGenPhpCommand extends Command
             $output->writeln('<error>protoc exited with an error (' . $return . ') when executed with: </error>');
             $output->writeln('');
             $output->writeln('<error>  ' . implode(" \\\n    ", $cmd) . '</error>');
+        } else {
+            $output->writeln(join("\n", $stdout));
         }
         return $return;
     }
@@ -237,7 +241,12 @@ class ProtocGenPhpCommand extends Command
                 }
             }
         } else {
-            $stdin = fread(STDIN, 1024 * 1024);
+            $bytes = '';
+            while (!feof(STDIN)) {
+                $bytes .= fread(STDIN, 8192);
+            }
+
+            $stdin = $bytes;
         }
 
         return $stdin;
@@ -253,11 +262,13 @@ class ProtocGenPhpCommand extends Command
         try {
             // Create a compiler interface
             $comp = new Protobuf\Compiler();
+
             echo $comp->compile($this->getStdIn());
             return 0;
         } catch(\Exception $e) {
-            $output->writeln('ERROR: ' . $e->getMessage());
-            $output->writeln($e->getTraceAsString());
+            $output->writeln('<error>' . $e->getMessage() . '</error>');
+            $output->writeln('<error>' . $e->getTraceAsString() . '<error>');
+
             return 255;
         }
     }
