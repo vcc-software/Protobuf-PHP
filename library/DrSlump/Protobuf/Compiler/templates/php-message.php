@@ -131,7 +131,7 @@ namespace <?php echo $this->ns($namespace)?> {
         /**
          * Get "<?php echo $name?>" value
          *
-         * @return \PhpOption\Option of type <?php echo $this->doctype($f)?>[]
+         * @return \PhpOption\Option of type \<?php echo $this->doctype($f)?>[]
          */
         public function get<?php echo $Name?>($idx = null)
         {
@@ -145,7 +145,7 @@ namespace <?php echo $this->ns($namespace)?> {
         /**
          * Get "<?php echo $name?>" list of values
          *
-         * @return <?php echo $this->doctype($f)?>[]
+         * @return \<?php echo $this->doctype($f)?>[]
          */
         public function get<?php echo $Name?>List()
         {
@@ -155,7 +155,7 @@ namespace <?php echo $this->ns($namespace)?> {
         /**
          * @deprecated Use set<?php echo $Name?>List($value) instead
          * Set "<?php echo $name?>" value
-         * @param <?php echo $this->doctype($f)?>[] $value
+         * @param \<?php echo $this->doctype($f)?>[] $value
          */
         public function set<?php echo $Name?>($value)
         {
@@ -164,7 +164,7 @@ namespace <?php echo $this->ns($namespace)?> {
 
         /**
          * Set "<?php echo $name?>" list
-         * @param <?php echo $this->doctype($f)?>[]|\Traversable $value
+         * @param \<?php echo $this->doctype($f)?>[]|\Traversable $value
          */
          public function set<?php echo $Name?>List($value)
          {
@@ -174,7 +174,7 @@ namespace <?php echo $this->ns($namespace)?> {
         /**
          * Add a new element to "<?php echo $name?>"
          *
-         * @param <?php echo $this->doctype($f)?> $value
+         * @param \<?php echo $this->doctype($f)?> $value
          */
         public function add<?php echo $Name?>($value)
         {
@@ -186,9 +186,9 @@ namespace <?php echo $this->ns($namespace)?> {
         /**
          * Get "<?php echo $name?>" value
          <?php if ($f->label == \DrSlump\Protobuf\Protobuf::RULE_OPTIONAL): ?>
-         * @return \PhpOption\Option of type (<?php echo $this->doctype($f)?>)
+         * @return \PhpOption\Option of type (\<?php echo $this->doctype($f)?>)
          <?php else: ?>
-         * @return <?php echo $this->doctype($f)?>
+         * @return \<?php echo $this->doctype($f)?>
          <?php endif; ?>
          *
          *
@@ -205,7 +205,7 @@ namespace <?php echo $this->ns($namespace)?> {
         /**
          * Set "<?php echo $name?>" value
          *
-         * @param <?php echo $this->doctype($f)?> $value
+         * @param \<?php echo $this->doctype($f)?> $value
          */
         public function set<?php echo $Name?>($value)
         {
