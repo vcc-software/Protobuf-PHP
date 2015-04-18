@@ -6,8 +6,8 @@ namespace DrSlump\Protobuf;
  *
  * Public fields are generated as PhpDoc properties
  *
- * @property string $string 
- */ 
+ * @property string $string
+ */
 class Message implements MessageInterface
 {
     /** @var \Closure[] */
@@ -156,9 +156,15 @@ class Message implements MessageInterface
         foreach ($this->_values as $k=>$v) {
             // Use the magic getter to obtain a valid value
             $result[$k] = $this->$k;
-            if ($result[$k] instanceof MessageInterface) {
-                $result[$k] = $result[$k]->toArray();
-            } else if ($result[$k] instanceof LazyRepeat) {
+            if (is_array($result[$k])) {
+                foreach ($result[$k] as $k1 => $v1) {
+                    if ($result[$k][$k1] instanceof MessageInterface
+                        || $result[$k][$k1] instanceof LazyRepeat) {
+                        $result[$k][$k1] = $result[$k][$k1]->toArray();
+                    }
+                }
+            } else if ($result[$k] instanceof MessageInterface
+                       || $result[$k] instanceof LazyRepeat) {
                 $result[$k] = $result[$k]->toArray();
             }
         }
@@ -258,7 +264,7 @@ class Message implements MessageInterface
 
     /**
      * Adds an unknown field to the message
-     * 
+     *
      * @param \DrSlump\Protobuf\Unknown string $field
      * @return \DrSlump\Protobuf\Message - Fluent Interface
      */
@@ -286,7 +292,7 @@ class Message implements MessageInterface
 
     // Magic getters and setters
 
-    function &__get($name) 
+    function &__get($name)
     {
         if (isset($this->_values[$name])) {
             $value = $this->_values[$name];
@@ -312,17 +318,17 @@ class Message implements MessageInterface
         return $this->_values[$name];
     }
 
-    function __set($name, $value) 
+    function __set($name, $value)
     {
         $this->_values[$name] = $value;
     }
 
-    function __isset($name) 
+    function __isset($name)
     {
         if (array_key_exists($name, $this->_values)) {
             return isset($this->_values[$name]);
         }
-        
+
         $field = $this->_descriptor->getFieldByName($name);
         if ($field && $field->hasDefault()) {
             return $field->getDefault() !== NULL;
@@ -331,12 +337,12 @@ class Message implements MessageInterface
         return false;
     }
 
-    function __unset($name) 
+    function __unset($name)
     {
         unset($this->_values[$name]);
     }
 
-    function __call($name, $args) 
+    function __call($name, $args)
     {
         $prefix = strtolower(substr($name, 0, 3));
 
@@ -353,7 +359,7 @@ class Message implements MessageInterface
                 $name = substr($name, 5);
                 break;
             }
-        default: 
+        default:
             throw new \BadMethodCallException('Unknown method "' . $name . '"');
         }
 
@@ -397,7 +403,7 @@ class Message implements MessageInterface
                 return isset($this->_values[$field->name]);
             }
         }
-        
+
         return $this->hasExtension($offset);
     }
 
@@ -446,7 +452,7 @@ class Message implements MessageInterface
     public function offsetUnset( $offset )
     {
         if (is_numeric($offset)) {
-            $field = $this->_descriptor->getField($offset);            
+            $field = $this->_descriptor->getField($offset);
             if (!$field) {
                 trigger_error("Protobuf message " . $this->_descriptor->getName() . " doesn't have any field with a tag number of $offset", E_USER_NOTICE);
                 return;
@@ -467,4 +473,3 @@ class Message implements MessageInterface
     }
 
 }
-
