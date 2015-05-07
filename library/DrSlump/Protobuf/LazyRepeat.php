@@ -2,7 +2,6 @@
 
 namespace DrSlump\Protobuf;
 
-use DrSlump\Protobuf;
 
 class LazyRepeat extends LazyValue implements \Iterator, \Countable, \ArrayAccess 
 {
