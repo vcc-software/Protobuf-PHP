@@ -154,3 +154,13 @@ automatically include the `php.proto` path so you don't need to worry about it.
 
     protoc-gen-php -o ./build tutorial.proto
 
+
+
+Testing
+-------
+
+
+  mkdir -p test/generated
+  ./protoc-gen-php.php -o test/generated  -Dmultifile=true  -i ./test/library/DrSlump/Protobuf/Test/protos/ ./test/library/DrSlump/Protobuf/Test/protos/*.proto
+  ./vendor/bin/phpunit
+
