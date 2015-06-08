@@ -61,7 +61,7 @@ class NativeReader
         // Protect against 0 byte reads when an EOF
         if ($length < 1) return '';
 
-        $bytes = substr($this->_str, $this->_ofs, $length);
+        $bytes = mb_substr($this->_str, $this->_ofs, $length, '8bit');
         $this->_ofs += mb_strlen($bytes, '8bit');
 
         return $bytes;
