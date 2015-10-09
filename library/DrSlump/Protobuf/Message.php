@@ -141,6 +141,7 @@ class Message implements MessageInterface
      * @param array $array
      */
     public function fromArray($data) {
+        $this->reset();
         foreach ($data as $k=>$v) {
             $this->$k = $v;
         }
@@ -320,7 +321,23 @@ class Message implements MessageInterface
 
     function __set($name, $value)
     {
-        $this->_values[$name] = $value;
+        $field = $this->_descriptor->getFieldByName($name);
+        if($field->getType() != \DrSlump\Protobuf\Protobuf::TYPE_MESSAGE){
+            $this->_values[$name] = $value;
+            return;
+        }
+        $class = $field->getReference();
+        if($field->getRule() != \DrSlump\Protobuf\Protobuf::RULE_REPEATED){
+            $obj = new $class();
+            $obj->fromArray($value);
+            $this->_values[$name] = $obj;
+            return;
+        }
+        foreach($value as $val){
+            $obj = new $class();
+            $obj->fromArray($val);
+            $this->_values[$name][] = $obj;
+        }
     }
 
     function __isset($name)
