@@ -10,9 +10,6 @@ use DrSlump\Protobuf;
 class Binary extends Protobuf\CodecAbstract
     implements Protobuf\CodecInterface
 {
-    protected $options = array(
-        'extension' => 'protobuf'
-    );
 
     /** @var \DrSlump\Protobuf\CodecInterface */
     protected $_impl;
@@ -22,11 +19,7 @@ class Binary extends Protobuf\CodecAbstract
     {
         parent::__construct($options);
 
-        if (extension_loaded($this->getOption('extension'))) {
-            $this->_impl = new Protobuf\Codec\Binary\Extension($options);
-        } else {
-            $this->_impl = new Protobuf\Codec\Binary\Native($options);
-        }
+        $this->_impl = new Protobuf\Codec\Binary\Native($options);
     }
 
     public function setOption($name, $value)
