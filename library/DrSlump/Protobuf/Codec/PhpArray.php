@@ -181,6 +181,12 @@ class PhpArray extends Protobuf\CodecAbstract
             case Protobuf\Protobuf::TYPE_FLOAT:
             case Protobuf\Protobuf::TYPE_DOUBLE:
                 return filter_var($value, FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE);
+            case Protobuf::TYPE_ENUM:
+                $nested = $field->getReference();
+                $reference = new $nested;
+                if (!is_null($ref_value = $reference->__get($value)))
+                    $value = $ref_value;
+                return filter_var($value, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);                
             // Assume the rest are ints
             default:
                 return filter_var($value, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
