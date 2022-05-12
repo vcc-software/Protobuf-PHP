@@ -1,6 +1,6 @@
 {
-    "name"       : "centraldesktop/protobuf-php",
-    "description": "PHP implementation of Google's Protocol Buffers",
+    "name"       : "vcc-software/protobuf-php",
+    "description": "Fork of centraldesktop/protobuf-php hidden some deprecated notices",
     "keywords"   : ["protobuf", "protocol buffer", "serializing"],
     "homepage"   : "https://github.com/drslump/Protobuf-PHP",
     "type"       : "library",
