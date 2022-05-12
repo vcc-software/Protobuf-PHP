@@ -410,7 +410,7 @@ class Message implements MessageInterface
 
 
     // Implements ArrayAccess for tag numbers and extensions
-
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         if (is_numeric($offset)) {
@@ -423,7 +423,8 @@ class Message implements MessageInterface
 
         return $this->hasExtension($offset);
     }
-
+    
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         if (is_numeric($offset)) {
@@ -444,7 +445,8 @@ class Message implements MessageInterface
             $this->setExtension($offset, $value);
         }
     }
-
+    
+    #[\ReturnTypeWillChange]
     public function offsetGet( $offset )
     {
         if (is_numeric($offset)) {
@@ -465,7 +467,8 @@ class Message implements MessageInterface
             return $this->getExtension($offset);
         }
     }
-
+    
+    #[\ReturnTypeWillChange]
     public function offsetUnset( $offset )
     {
         if (is_numeric($offset)) {
