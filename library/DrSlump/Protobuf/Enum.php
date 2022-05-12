@@ -48,7 +48,7 @@ abstract class Enum extends \IteratorIterator implements \ArrayAccess
 
 
     // Implements ArrayAccess for extensions and unknown fields
-
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         if (is_int($offset)) {
@@ -58,6 +58,7 @@ abstract class Enum extends \IteratorIterator implements \ArrayAccess
         }
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet( $offset )
     {
         if (is_int($offset)) {
@@ -67,11 +68,13 @@ abstract class Enum extends \IteratorIterator implements \ArrayAccess
         }
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         throw new \RuntimeException('Enum cannot be modified');
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset( $offset )
     {
         throw new \RuntimeException('Enum cannot be modified');
